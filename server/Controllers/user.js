@@ -1,27 +1,27 @@
 // require('dotenv').config();
-const bcrypt = require('bcrypt');
+import bcrypt from "bcrypt";
 // const _ = require('lodash');
 // const axios = require('axios');
 // const otpGenerator = require('otp-generator');
 // const client = require('twilio')(process.env.ACOUNT_SID, process.env.AUTH_TOKEN);
-const userToken = require('../utils/generateToken')
-const {User} = require('../Models/User');
+import generateTokenAndSetCookie from "../utils/generateToken.js";
+import User from "../Models/User.js";
 // const {Otp} = require('../Models/Otp');
 
 
 
 
-module.exports.signUpUser = async (req, res) => {
+export const signup = async (req, res) => {
   try {
-      const { userName, password, confirmPassword, phoneNumber } = req.body;
+      const { username, password, confirmPassword, phoneNumber } = req.body;
 
       if (password !== confirmPassword) {
           return res.status(400).json({ error: "Passwords don't match" });
       }
 
-      const existingUser = await User.findOne({ userName });
+      const existingUser = await User.findOne({ username });
       if (existingUser) {
-          return res.status(400).json({ error: "Username already exists" });
+          return res.status(400).json({ error: "Username already taken" });
       }
 
       const existingPhoneNumber = await User.findOne({ phoneNumber });
@@ -31,19 +31,19 @@ module.exports.signUpUser = async (req, res) => {
       
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password,salt);
-      const generateAvatar = `https://api.dicebear.com/7.x/adventurer/svg?seed=${userName}&radius=10&backgroundType=solid,gradientLinear&backgroundRotation=-320,-340,-350,-360,-330,-310,-300,-290,-280,-270,-260,-250,-240,-230,-220&earringsProbability=20&featuresProbability=0&glassesProbability=20&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
+      const generateAvatar = `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}&radius=10&backgroundType=solid,gradientLinear&backgroundRotation=-320,-340,-350,-360,-330,-310,-300,-290,-280,-270,-260,-250,-240,-230,-220&earringsProbability=20&featuresProbability=0&glassesProbability=20&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
 
       const newUser = new User({
-          userName,
+          username,
           password:hashedPassword,
           phoneNumber,
           avatar: generateAvatar
       });
       
       if(newUser){
-       userToken.generateUserTokenandCookie(newUser._id,res);
-      await newUser.save();
-      return res.status(201).json(newUser);
+        generateTokenAndSetCookie(newUser._id, res);
+        await newUser.save();
+        return res.status(201).json(newUser);
       }else{
         return res.status(400).json({error:"Invalid user Data"})
       }
@@ -53,30 +53,31 @@ module.exports.signUpUser = async (req, res) => {
           return res.status(500).json({ error: "Internal Server Error" });
       }
 };
-  
-  module.exports.loginUser = async (req,res) => {
+ 
+export const login = async (req,res) => {
     try {
-      const{userName,password} = req.body;
-      const user = await User.findOne({userName});
+      const{username,password} = req.body;
+      const user = await User.findOne({username});
       const isPasswordCorrect = await bcrypt.compare(password,user?.password || "");
 
       if(!user || !isPasswordCorrect){
         return res.status(400).json({error:"Invalid username or password"})
       }
 
-      userToken.generateUserTokenandCookie(user._id,res);
+      generateTokenAndSetCookie(user._id, res);
+
       return res.status(200).json({
         _id: user._id,
-        username: user.userName,
+        username: user.username,
         avatar: user.avatar 
       })
     } catch (error) {
       console.error("Error in LoginUser:", error);
       return res.status(500).json({ error: "Internal Server Error" });
     }
-  }
+};
 
-  module.exports.logoutUser = (req,res) => {
+export const logout = (req,res) => {
     try {
       res.cookie("jwt","",{maxAge: 0});
       res.status(200).json({message:"Logout successfully"});
@@ -84,8 +85,20 @@ module.exports.signUpUser = async (req, res) => {
       console.error("Error in logoutUser:", error);
       return res.status(500).json({ error: "Internal Server Error" });
     }
-  }
+};
 
+export const getUsersForSidebar = async (req,res) => {
+  try {
+    const loggedInUserID = req.user._id;
+
+    const filteredUsers = await User.find({_id: {$ne:loggedInUserID}}).select(["-password","-phoneNumber","-isAdmin"]);
+
+    res.status(200).json(filteredUsers);
+  } catch (error) {
+    console.error("Error in getUsersForSidebar:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+}
 
 // module.exports.signUp = async (req,res) => {
 //   const user = await User.findOne({number:req.body.number});

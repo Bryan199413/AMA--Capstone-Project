@@ -4,12 +4,29 @@
 
 
 
-.react-tel-input .form-control{
-    @apply !w-full border-none;
+ .react-tel-input .form-control{
+    background-color: var(--fallback-b1, oklch(var(--b1)))/var(--tw-bg-opacity);
+    border: none;
 }
 .react-tel-input .flag-dropdown {
-    @apply !border-none bg-white;
+    background-color: var(--fallback-b1, oklch(var(--b1)))/var(--tw-bg-opacity);
+    border: none;
 }
+
+
+/* babalikan ko na bug */
+/* .react-tel-input .flag-dropdown :hover {
+    @apply !bg-base-200;    
+}
+
+.react-tel-input .flag-dropdown.open .selected-flag {
+    @apply !bg-base-200 rounded-md;
+}
+
 .react-tel-input .country-list{
-    @apply !max-h-[180px] 
-}
+    @apply !bg-base-200;
+} 
+
+.react-tel-input .selected-flag :hover {
+    @apply !bg-base-200;
+} */
