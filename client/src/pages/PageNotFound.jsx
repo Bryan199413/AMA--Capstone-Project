@@ -2,9 +2,7 @@ import React from 'react'
 
 function PageNotFound() {
   return (
-    <div>
-      Page not found!
-    </div>
+    <div className="hero min-h-screen bg-base-200">404 This page could not be found.</div>
   )
 }
 
