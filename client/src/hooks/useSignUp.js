@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
-
+import parsePhoneNumber from 'libphonenumber-js'
 
 const useSignUp = () => {
   const [loading,setLoading] = useState(false);
@@ -57,12 +57,23 @@ function handleInputErrors({username,password,confirmPassword,phoneNumber}){
         return false;
     }
 
-    const specialCharsRegex = /[!#$%^&*()+\=\[\]{};':"\\|,<>\/? ]/;
-    if (specialCharsRegex.test(username)) {
+    const usernameSpecialCharsRegex = /[!#$%^&*()+\=\[\]{};':"\\|,<>\/? ]/;
+    const passwordSpecialCharsRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/? ]/;
+    if (usernameSpecialCharsRegex.test(username)) {
         toast.error('Username must not contain special characters or spaces');
         return false;
     }
-
+    if (passwordSpecialCharsRegex.test(password)) {
+        toast.error('Password must not contain special characters or spaces');
+        return false;
+    } 
+     
+    const phoneNumberObj = parsePhoneNumber(phoneNumber);
+    if (!phoneNumberObj || !phoneNumberObj.isValid()) {
+          toast.error('Invalid phone number');
+          return false;
+    }
+    
     
 
     return true;

@@ -4,6 +4,7 @@ import Signup from './pages/Signup';
 import PageNotFound from './pages/PageNotFound';
 import Home from './pages/Home';
 import {Toaster} from 'react-hot-toast';
+
 function App() {
   return (
     <div>
