@@ -1,8 +1,11 @@
 import React from 'react'
+import Navbar from '../Components/Navbar'
+import SideNav from '../Components/SideNav'
 
 function Home() {
   return (
-    <div className="hero min-h-screen bg-base-200">Homepage
+    <div className="min-h-screen bg-base-200">
+       <Navbar/>
     </div>
   )
 }
