@@ -1,5 +1,5 @@
 import express from "express";
-import { login, logout, signup, getUsersForSidebar, } from "../Controllers/user.js";
+import { login, logout, signup, getUsersForSidebar, verifyOtp } from "../Controllers/user.js";
 import protectRoute from "../middleware/protectRoute.js";
 
 const router = express.Router();
@@ -7,12 +7,14 @@ const router = express.Router();
 
 router.post("/signup", signup);
 
+router.post('/signup/verify',verifyOtp)
+
 router.post("/login", login);
 
 router.post("/logout", logout);
 
 router.get("/",protectRoute,getUsersForSidebar);
-// router.post('/signup/verify',userController.verifyOtp)
+
 
 
 

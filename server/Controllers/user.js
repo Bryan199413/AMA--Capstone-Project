@@ -1,15 +1,12 @@
 // require('dotenv').config();
 import bcrypt from "bcrypt";
-// const _ = require('lodash');
+import _ from "lodash";
 // const axios = require('axios');
-// const otpGenerator = require('otp-generator');
+import otpGenerator from "otp-generator";
 // const client = require('twilio')(process.env.ACOUNT_SID, process.env.AUTH_TOKEN);
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 import User from "../Models/User.js";
-// const {Otp} = require('../Models/Otp');
-
-
-
+import Otp from "../Models/Otp.js";
 
 export const signup = async (req, res) => {
   try {
@@ -23,7 +20,7 @@ export const signup = async (req, res) => {
       if (existingUser) {
           return res.status(400).json({ error: "Username already taken" });
       }
-
+      
       const existingPhoneNumber = await User.findOne({ phoneNumber });
       if (existingPhoneNumber) {
           return res.status(400).json({ error: "Phone number already registered" });
@@ -31,29 +28,57 @@ export const signup = async (req, res) => {
       
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password,salt);
+      const OTP = otpGenerator.generate(6,{digits: true, specialChars: false, upperCaseAlphabets: false, lowerCaseAlphabets:false});
+      const hashedOtp = await bcrypt.hash(OTP,salt)
       const generateAvatar = `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}&radius=10&backgroundType=solid,gradientLinear&backgroundRotation=-320,-340,-350,-360,-330,-310,-300,-290,-280,-270,-260,-250,-240,-230,-220&earringsProbability=20&featuresProbability=0&glassesProbability=20&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
+      console.log(OTP);
 
-      const newUser = new User({
-          username,
-          password:hashedPassword,
-          phoneNumber,
-          avatar: generateAvatar
+      const newOtp = new Otp({
+        username,
+        password:hashedPassword,
+        phoneNumber,
+        avatar:generateAvatar,
+        otp:hashedOtp
       });
       
-      if(newUser){
-        generateTokenAndSetCookie(newUser._id, res);
-        await newUser.save();
-        return res.status(201).json(newUser);
-      }else{
-        return res.status(400).json({error:"Invalid user Data"})
-      }
-      
+      await newOtp.save();
+      return res.status(200).json({message:"Otp sent successfuly!"});
       } catch (error) {
-          console.error("Error in signUpUser:", error);
+          console.error("Error in signUp:", error);
           return res.status(500).json({ error: "Internal Server Error" });
       }
 };
- 
+
+export const verifyOtp = async (req,res) => {
+  try {
+      const {phoneNumber,otp} = req.body;
+      const otpHolder = await Otp.find({phoneNumber:phoneNumber});
+      if(otpHolder.length === 0){
+        return res.status(400).json({error:"You use an Expired OTP!"})
+      };
+      
+      const rightOtpFind = otpHolder[otpHolder.length -1 ];
+      const validUser = await bcrypt.compare(otp,rightOtpFind.otp);
+
+      if(rightOtpFind.phoneNumber === phoneNumber && validUser){
+          const newUser = new User(_.pick(rightOtpFind,["username","password","phoneNumber","avatar"]));
+          if(newUser){
+            generateTokenAndSetCookie(newUser._id, res);
+            await newUser.save();
+            await Otp.deleteMany({phoneNumber:rightOtpFind.phoneNumber});
+            return res.status(201).json(newUser);
+            }else{
+              return res.status(400).json({error:"Invalid user Data"})
+            }
+      }else{
+        return res.status(400).json({error:"Your OTP was wrong!"})
+      }
+      } catch (error) {
+          console.error("Error in verifyOtp:", error);
+          return res.status(500).json({ error: "Internal Server Error" });
+      }
+};
+
 export const login = async (req,res) => {
     try {
       const{username,password} = req.body;
@@ -63,13 +88,12 @@ export const login = async (req,res) => {
       if(!user || !isPasswordCorrect){
         return res.status(400).json({error:"Invalid username or password"})
       }
-
       generateTokenAndSetCookie(user._id, res);
 
       return res.status(200).json({
         _id: user._id,
         username: user.username,
-        avatar: user.avatar 
+        avatar: user.avatar,
       })
     } catch (error) {
       console.error("Error in LoginUser:", error.message);
