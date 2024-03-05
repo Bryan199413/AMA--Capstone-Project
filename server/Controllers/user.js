@@ -42,9 +42,9 @@ export const signup = async (req, res) => {
       });
       
       await newOtp.save();
-      return res.status(200).json({message:"Otp sent successfuly!"});
+      return res.status(200).json({message:"OTP was sent!"});
       } catch (error) {
-          console.error("Error in signUp:", error);
+          console.error("Error in signup:", error);
           return res.status(500).json({ error: "Internal Server Error" });
       }
 };
@@ -66,7 +66,7 @@ export const verifyOtp = async (req,res) => {
             generateTokenAndSetCookie(newUser._id, res);
             await newUser.save();
             await Otp.deleteMany({phoneNumber:rightOtpFind.phoneNumber});
-            return res.status(201).json(newUser);
+            return res.status(201).json(newUser.username);
             }else{
               return res.status(400).json({error:"Invalid user Data"})
             }

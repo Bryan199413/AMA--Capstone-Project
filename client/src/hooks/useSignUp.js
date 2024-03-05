@@ -1,38 +1,34 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast';
 import parsePhoneNumber from 'libphonenumber-js'
-import { useAuthContext } from '../context/AuthContext';
 
 const useSignUp = () => {
   const [loading,setLoading] = useState(false);
-  const {setAuthUser} = useAuthContext();
-     const signup = async ({username,password,confirmPassword,phoneNumber}) => {
-        const succes = handleInputErrors({username,password,confirmPassword,phoneNumber});
-        
-        if(!succes) return;
+    const signup = async ({username,password,confirmPassword,phoneNumber}) => {
+    const succes = handleInputErrors({username,password,confirmPassword,phoneNumber});
+    
+    if(!succes) return;
 
-        setLoading(true);
+    setLoading(true);
+    
+    try {
+        const res = await fetch('/api/users/signup',{
+            method:"POST",
+            headers: { "Content-Type": "application/json"},
+            body:JSON.stringify({username,password,confirmPassword,phoneNumber})
+        })
         
-        try {
-            const res = await fetch('/api/users/signup',{
-                method:"POST",
-                headers: { "Content-Type": "application/json"},
-                body:JSON.stringify({username,password,confirmPassword,phoneNumber})
-            })
-           
-            const data = await res.json();
-            if (data.error) {
-				throw new Error(data.error);
-			}
-
-            localStorage.setItem("machimachi-user",JSON.stringify(data));
-            setAuthUser(data);
-        } catch (error) {
-            toast.error(error.message)
-        }finally{
-            setLoading(false);
+        const data = await res.json();
+        if (data.error) {
+            throw new Error(data.error);
         }
-  }
+        return toast.success(data.message)
+    } catch (error) {
+        toast.error(error.message)
+    }finally{
+        setLoading(false);
+    }
+}
 
   return { loading, signup};
 }
