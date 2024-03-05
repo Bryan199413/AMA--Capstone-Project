@@ -83,7 +83,7 @@ function SignupForm() {
               </label>         
           </form>
         </div>   
-      </div>) : (<Otp phoneNumber={inputs.phoneNumber}/>) }
+      </div>) : (<Otp phoneNumber={inputs.phoneNumber} Resend={handleSubmit} displayOtpForm={setDisplayOtpForm}/>) }
     </div>
   )
 }
