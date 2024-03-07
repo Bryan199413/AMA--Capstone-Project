@@ -3,7 +3,6 @@ import { FcSettings } from "react-icons/fc";
 import { CiLogout } from "react-icons/ci";
 import useLogout from '../hooks/useLogout';
 
-
 function SideNav() {
   const {logout} = useLogout()
   
@@ -11,21 +10,19 @@ function SideNav() {
   const userData = JSON.parse(storedData);
   const avatarURL = userData.avatar;
   return (
-   <div className='w-80 h-full bg-base-200 mx-auto'>
-      <div className='flex flex-col h-full'>
-         
-      
-        <div className='flex h-[10%] mx-1'>
-          <span className="flex-1 flex justify-center items-center border-b hover:text-blue-700 cursor-pointer">Chats</span>
-          <span className="flex-1 flex justify-center items-center border-b hover:text-blue-700 cursor-pointer">Friends</span>
-        </div>
-
-         <div className='h-[82%] text-center'>chat & friends list</div>
-         
+   <div className='flex flex-col w-80 h-full bg-base-200 p-2'>
         
-         <div className='h-[8%] flex justify-between items-center'>
-          <div className="avatar px-3 flex justify-center items-center">
-            <div className="w-10 h-10 rounded-full">
+       <div className='text-md flex justify-between rounded-lg bg-base-300 p-1'>
+          <button className='flex-1 py-2 rounded-lg focus:bg-base-100'>Chats</button>
+          <button className='flex-1 py-2 rounded-lg focus:bg-base-100'>Friends</button>
+       </div>
+   
+         <div className='h-[100%] text-center'>Messages & friends list</div>
+               
+        
+         <div className='p-3 flex justify-between items-center hover:bg-base-100'>
+          <div className="avatar  flex justify-center items-center">
+            <div className="w-9 rounded-full">
               <img src={avatarURL} />
             </div>
           </div>
@@ -39,7 +36,7 @@ function SideNav() {
             </div>        
           </div> 
 
-      </div>
+    
    </div>
   );
 }
