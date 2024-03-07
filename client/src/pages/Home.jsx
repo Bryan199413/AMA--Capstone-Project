@@ -4,8 +4,20 @@ import SideNav from '../Components/SideNav'
 
 function Home() {
   return (
-    <div className="min-h-screen bg-base-200">
-       <Navbar/>
+    <div className='bg-base-300 h-screen flex flex-col'>
+        <Navbar/>
+       
+        <div className='w-full  h-full flex'>
+           <div className='hidden lg:block'>
+           <SideNav />
+           </div>
+            
+           <div className='text-center w-full'>
+           chatbox here!
+           </div>
+        </div>
+        
+       
     </div>
   )
 }
