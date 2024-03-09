@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
-import { FcSettings } from "react-icons/fc";
-import { CiLogout } from "react-icons/ci";
-import useLogout from '../hooks/useLogout';
-
+import Menu from './Menu';
 function SideNav() {
-  const {logout} = useLogout()
+ 
   const [tab,setTab] = useState('Chats')
-
-  const storedData = localStorage.getItem("machimachi-user");
-  const userData = JSON.parse(storedData);
-  const avatarURL = userData.avatar;
-
   const handleTab = (tab) => {
     setTab(tab)  
   }
@@ -45,25 +37,7 @@ function SideNav() {
        </div>
        <div className={tab === 'Friends' ? 'block text-center' : 'hidden'}>Friends</div>
      </div>
-       
-      
-          
-          
-      <div className='p-1 flex justify-between rounded-md items-center hover:bg-base-100'>
-        <div className="avatar  flex justify-center items-center">
-          <div className="w-8 rounded-full">
-            <img src={avatarURL} />
-          </div>
-        </div>
-      
-        <div className="dropdown dropdown-top dropdown-end p-3">
-            <div tabIndex={0} role="button"><FcSettings size={30}/></div>
-            <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-              <li><a>Item 1</a></li>
-              <li onClick={logout}><a><CiLogout/>Log out</a></li>
-            </ul>
-          </div>        
-      </div> 
+     <Menu />
    </div>
   );
 }
