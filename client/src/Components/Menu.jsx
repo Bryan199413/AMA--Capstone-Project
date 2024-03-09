@@ -28,11 +28,11 @@ function Menu() {
             </div>
         {!isOpen ? ( <MdOutlineKeyboardArrowUp size={20} />) : (<MdOutlineKeyboardArrowDown size={20} />)}
      </button>
-        {isOpen ? ( <div className='absolute bottom-14 rounded-md shadow-lg bg-base-100 left-0 w-full'>
+        {isOpen ? ( <div className='absolute bottom-14 rounded-md shadow-md border border-base-300 bg-base-200 left-0 w-full'>
             <ul className='cursor-pointer'>
-                <li className='hover:bg-base-200 flex items-center p-2 m-2 rounded-md'><RxAvatar size={20}/><span className='mx-2'>Change avatar</span></li>
-                <li className='hover:bg-base-200 flex items-center p-2 m-2 rounded-md'><MdOutlineSettings size={20}/><span className='mx-2'>Settings</span></li>
-                <li className='hover:bg-base-200 flex items-center p-2 m-2 rounded-md' onClick={logout}><MdLogout size={20}/><span className='mx-2'>Log out</span></li>
+                <li className='hover:bg-base-100 flex items-center p-2 m-2 rounded-md'><RxAvatar size={20}/><span className='mx-2'>Change avatar</span></li>
+                <li className='hover:bg-base-100 flex items-center p-2 m-2 rounded-md'><MdOutlineSettings size={20}/><span className='mx-2'>Settings</span></li>
+                <li className='hover:bg-base-100 flex items-center p-2 m-2 rounded-md' onClick={logout}><MdLogout size={20}/><span className='mx-2'>Log out</span></li>
             </ul>
         </div>) : null}
     </div>
