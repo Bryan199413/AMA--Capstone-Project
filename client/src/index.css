@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 
-
  .react-tel-input .form-control{
     background-color: var(--fallback-b1, oklch(var(--b1)))/var(--tw-bg-opacity);
     border: none;
@@ -14,6 +13,20 @@
 }
 
 
+   
+/* SideNav Component Start*/
+
+::-webkit-scrollbar {
+    width: 7px;
+   }
+
+.chatsAndFriends:hover::-webkit-scrollbar-thumb {
+    @apply !bg-[#A9A9A9] rounded-md
+    
+}
+
+/* SideNav Component End*/
+  
 /* babalikan ko na bug */
 /* .react-tel-input .flag-dropdown :hover {
     @apply !bg-base-200;    

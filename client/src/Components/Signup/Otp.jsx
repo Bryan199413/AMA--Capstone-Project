@@ -23,7 +23,7 @@ function Otp({ phoneNumber, Resend, displayOtpForm }) {
               <span className='text-xs text-gray-500 hover:text-blue-400 cursor-pointer' onClick={() =>  {displayOtpForm(false)}}>change?</span>
             </div>
             <form className="card-body pt-3" onSubmit={hundleSubmit}>
-            <p className='text-center text-sm'>The OTP will expire in 5minutes</p>
+            <p className='text-center text-sm'>The OTP will expire in 5 minutes</p>
               <div className="form-control w-full">
                 <OtpInput
                   inputType='tel'
