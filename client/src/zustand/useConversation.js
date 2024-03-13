@@ -1,7 +1,7 @@
 import {create} from 'zustand';
 
 const useConversation = create((set) => ({
-   selectedConversation: null,
+   selectedConversation: 'New Chat',
    setSelectedConversation: (selectedConversation) => set({selectedConversation}),
    messages:[],
    setMessages: (messages) => set({messages}),

@@ -5,8 +5,9 @@ import { LiaUserFriendsSolid } from "react-icons/lia";
 import { RiChatNewLine } from "react-icons/ri";
 import Conversations from './Conversations';
 import useGetConversations from '../../hooks/useGetConversations';
-
+import useConversation from '../../zustand/useConversation'
 function SideNav() {
+  const {selectedConversation, setSelectedConversation} = useConversation();
   const {loading,conversations} = useGetConversations()
   const [tab, setTab] = useState('Chats');
 
@@ -37,7 +38,8 @@ function SideNav() {
       </div>
 
       <div className={tab === 'Chats' ? 'block' : 'hidden'}>
-        <div className="flex justify-center text-sm hover:bg-base-100 p-2 my-1 rounded-md cursor-pointer">
+        <div className={`flex justify-center text-sm hover:bg-base-100 p-2 my-1 rounded-md cursor-pointer ${selectedConversation === 'New Chat' ? 'bg-base-100' : ''}`}
+          onClick={() => setSelectedConversation('New Chat')}>
           <RiChatNewLine  size={20}/>
           <h1 className='px-1'>New chat</h1>
         </div>

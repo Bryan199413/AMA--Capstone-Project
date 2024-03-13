@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { RiMenuUnfoldLine } from "react-icons/ri";
 import SideNav from './Sidenav/SideNav';
-
+import useConversation from '../zustand/useConversation';
 
 function Navbar() {
+  const {selectedConversation, setSelectedConversation} = useConversation() 
+
   const storedTheme = localStorage.getItem("theme") || "light";
   const [theme, setTheme] = useState(storedTheme);
   
@@ -32,10 +34,8 @@ function Navbar() {
         </div>
       </div>
         
-          
-
-      <div className="flex-1 text-2xl">
-        <h1>jongga</h1>
+      <div className="flex-1 text-xl">
+        {selectedConversation === 'New Chat' ? (<h1>New Chat</h1>) : (<h1>{selectedConversation.username}</h1>)}
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
