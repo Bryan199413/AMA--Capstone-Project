@@ -15,9 +15,9 @@ const Login = () => {
 	};
   return (
    <div>
-      <div className="hero min-h-screen bg-base-200">
+      <div className="hero min-h-screen bg-base-200 ">
         <div className="hero-content w-full h-screen flex-row">
-         <div className="h-[100%] hidden lg:flex flex-col gap-60">
+         <div className="h-[100%] hidden lg:flex flex-col gap-80">
            <div className='text-green-400 text-xl font-bold'>100k+ Online</div>
            <div> <Banner /></div>    
          </div>

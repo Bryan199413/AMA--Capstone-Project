@@ -26,7 +26,18 @@
 }
 
 /* SideNav Component End*/
-  
+
+/* messageContainer Component Start*/
+
+.messageContainer:hover::-webkit-scrollbar-thumb {
+    @apply !bg-[#A9A9A9] rounded-md
+}
+
+.avatar.online:before {
+    @apply !w-[20%] h-[20%]
+}
+/* messageContainer Component End*/
+
 /* babalikan ko na bug */
 /* .react-tel-input .flag-dropdown :hover {
     @apply !bg-base-200;    

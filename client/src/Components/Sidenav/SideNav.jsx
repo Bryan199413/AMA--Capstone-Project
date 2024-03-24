@@ -6,7 +6,8 @@ import { RiChatNewLine } from "react-icons/ri";
 import Conversations from './Conversations';
 import useGetConversations from '../../hooks/useGetConversations';
 import useConversation from '../../zustand/useConversation'
-function SideNav() {
+
+function SideNav({ setSideNav }) {
   const {selectedConversation, setSelectedConversation} = useConversation();
   const {loading,conversations} = useGetConversations()
   const [tab, setTab] = useState('Chats');
@@ -16,9 +17,9 @@ function SideNav() {
   };
 
   return (
-    <div className="flex flex-col w-72 h-full bg-base-200 p-2">
-        <div className="flex justify-center items-center text-2xl min-h-[5rem]">
-         <span className='text-[#41B8D5]'>Machi</span><span className='text-[#EEC0C2]'>machi</span>
+    <div className="flex flex-col w-72 h-full bg-base-200 p-2 z-20">
+      <div className="flex justify-center items-center text-2xl min-h-[5rem]">
+        <span className='text-[#41B8D5]'>Machi</span><span className='text-[#EEC0C2]'>machi</span>
       </div>
       <div className="text-md flex justify-between rounded-lg bg-base-300 p-1">
         <button
@@ -49,7 +50,7 @@ function SideNav() {
       <div className="chatsAndFriends overflow-y-auto h-screen">
         <div className={tab === 'Chats' ? 'block' : 'hidden'}>
             {conversations.map((conversation) => (
-              <Conversations 
+              <Conversations setSideNav={setSideNav}
               key={conversation._id}
               conversation={conversation}
               />

@@ -10,9 +10,8 @@ function MessageContainer() {
    },[setSelectedConversation])
 
   return (
-    <div className='w-full h-full overflow-auto'>
-       {selectedConversation === 'New Chat' ? (<div className='text-center'>New chat </div>) : (<Messages/>
-        )}
+    <div className='messageContainer w-full h-full overflow-auto z-10'>
+       {selectedConversation === 'New Chat' ? (<div className='text-center'>New chat </div>) : (<Messages/> )}   
     </div>
   )
 }

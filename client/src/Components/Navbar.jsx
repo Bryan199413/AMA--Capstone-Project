@@ -8,7 +8,9 @@ function Navbar() {
 
   const storedTheme = localStorage.getItem("theme") || "light";
   const [theme, setTheme] = useState(storedTheme);
-  
+
+  const [sideNav,setSideNav] = useState(false)
+
   const handleToggle = (e) => {
     const newTheme = e.target.checked ? "dark" : "light";
     setTheme(newTheme);
@@ -20,22 +22,27 @@ function Navbar() {
   }, [theme]);
 
   return (
-    <div className="navbar bg-base-100 border-base-300 shadow-lg">
+    <div className="navbar bg-base-100 border-base-300 shadow-lg z-30">
       <div className='lg:hidden mr-4'>
         <div className="drawer">
-          <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+          <input id="my-drawer" type="checkbox" className="drawer-toggle" checked={sideNav} onChange={() => setSideNav(!sideNav)}/>
           <div className="drawer-content">
-            <label htmlFor="my-drawer" className="btn drawer-button"><RiMenuUnfoldLine size={30} /></label>
+            <label htmlFor="my-drawer" className="btn drawer-button" ><RiMenuUnfoldLine size={30} /></label>
           </div> 
-          <div className="drawer-side">
+          <div className="drawer-side"> 
             <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
-            <SideNav />
+            <SideNav setSideNav={setSideNav} />
           </div>
         </div>
       </div>
         
       <div className="flex-1 text-xl">
-        {selectedConversation === 'New Chat' ? (<h1>New Chat</h1>) : (<h1>{selectedConversation.username}</h1>)}
+        {selectedConversation === 'New Chat' ? (<h1>New Chat</h1>) 
+        : 
+        (<div className='flex items-center'>
+          <img className="w-11 h-11 rounded-full" src={selectedConversation.avatar} alt="Avatar" />
+          <span className="p-2">{selectedConversation.username}</span>        
+        </div>)}
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
