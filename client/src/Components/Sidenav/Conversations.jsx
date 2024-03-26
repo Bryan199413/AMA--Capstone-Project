@@ -1,16 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import useConversation from '../../zustand/useConversation'
 import { useSocketContext } from '../../context/SocketContext';
 
 function Conversations({ conversation,setSideNav}) {
-  const {selectedConversation, setSelectedConversation} = useConversation()
+  const {selectedConversation, setSelectedConversation,messages} = useConversation()
   const isSeleted = selectedConversation?._id === conversation._id;
-  
-  const {onlineUsers} = useSocketContext();
+  const [hasNewMessage, setHasNewMessage] = useState(null);
+  const { onlineUsers, socket} = useSocketContext();
   const isOnline = onlineUsers.includes(conversation._id)
-  
+
+  useEffect(() => {
+    const handleNewMessage = (newMessage) => {
+      if (newMessage.senderId === conversation._id) {
+         if(isSeleted){
+           setHasNewMessage(false)
+         } else{
+          setHasNewMessage(true);
+         }       
+      }
+    };  
+
+    socket.on("newMessage", handleNewMessage);
+
+    return () => {
+      socket.off("newMessage", handleNewMessage);
+    };
+  }, [socket,conversation.id,messages]);
+
   const handleSelect = () => {
     setSelectedConversation(conversation)
+    setHasNewMessage(false);
     if (setSideNav) {
       setSideNav(false);
     }
@@ -24,7 +43,7 @@ function Conversations({ conversation,setSideNav}) {
           <img src={conversation.avatar} alt="Avatar" />
         </div>
       </div>
-      <div className="mx-2"><p>{conversation.username}</p></div>
+      <div className={`mx-2 ${hasNewMessage ? 'text-blue-600 font-black' : ''}`}><p>{conversation.username}</p></div>
     </div>
   )
 }

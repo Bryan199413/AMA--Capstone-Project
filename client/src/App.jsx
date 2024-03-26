@@ -5,9 +5,11 @@ import PageNotFound from './pages/PageNotFound';
 import Home from './pages/Home';
 import {Toaster} from 'react-hot-toast';
 import { useAuthContext } from './context/AuthContext';
+import useListenMessages from './hooks/useListenMessages';
 
 function App() {
   const {authUser} = useAuthContext();
+  useListenMessages();
   return (
     <div className='font-open-sans'>
         <Routes>

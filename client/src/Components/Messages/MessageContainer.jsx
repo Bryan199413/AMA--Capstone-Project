@@ -6,7 +6,7 @@ function MessageContainer() {
    const {selectedConversation, setSelectedConversation} = useConversation();
    
    useEffect(() => {
-       return () => setSelectedConversation('New Chat')
+       return () => setSelectedConversation(selectedConversation)
    },[setSelectedConversation])
 
   return (

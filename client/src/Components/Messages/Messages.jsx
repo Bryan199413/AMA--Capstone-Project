@@ -1,11 +1,9 @@
 import React, { useEffect, useRef } from 'react'
 import Message from './Message'
 import useGetMessage from '../../hooks/useGetMessage'
-import useListenMessages from "../../hooks/useListenMessages";
 
 function Messages() {
   const {messages,loading} = useGetMessage()
-  useListenMessages();
   const lastMessageRef = useRef();
 
   useEffect(() => {
@@ -23,7 +21,7 @@ function Messages() {
         <Message message={message}/>
       </div>))}
 
-      {loading && (<div className='text-center'>loading...</div>)}
+      {loading && (<div className='flex justify-center items-center mt-2'><span className="loading loading-spinner loading-lg"></span></div> )}
       {!loading && messages.length === 0 && (<p className='text-center'>Send a message to start the conversation</p>)}
     </div>     
   ) 

@@ -40,7 +40,7 @@ function Navbar() {
         {selectedConversation === 'New Chat' ? (<h1>New Chat</h1>) 
         : 
         (<div className='flex items-center'>
-          <img className="w-11 h-11 rounded-full" src={selectedConversation.avatar} alt="Avatar" />
+          <img className="w-10 h-10 rounded-full" src={selectedConversation.avatar} alt="Avatar" />
           <span className="p-2">{selectedConversation.username}</span>        
         </div>)}
       </div>

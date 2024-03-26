@@ -55,7 +55,7 @@ function SideNav({ setSideNav }) {
               conversation={conversation}
               />
             ))}
-           {loading ? <span className="loading loading-spinner loading-xs"></span> : null}
+           {loading ? <div className='flex justify-center items-center'><span className="loading loading-spinner loading-md"></span></div> : null}
         </div>
         <div className={tab === 'Friends' ? 'block text-center' : 'hidden'}>Friends</div>
       </div>
