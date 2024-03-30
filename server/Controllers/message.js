@@ -64,3 +64,12 @@ export const getMessages = async (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
+
+// export const readMarkMessage = async (req,res) => {
+// 	try {
+// 		const {} = req.params
+// 	} catch (error) {
+// 		console.log("Error in readMarkMessage: ",error.message)
+// 		res.status(500).json( {error : "Internal server error "})
+// 	}
+// }

@@ -5,10 +5,10 @@ import { useSocketContext } from '../../context/SocketContext';
 function Conversations({ conversation,setSideNav}) {
   const {selectedConversation, setSelectedConversation,messages} = useConversation()
   const isSeleted = selectedConversation?._id === conversation._id;
-  const [hasNewMessage, setHasNewMessage] = useState(null);
+  const [hasNewMessage, setHasNewMessage] = useState(false);
   const { onlineUsers, socket} = useSocketContext();
   const isOnline = onlineUsers.includes(conversation._id)
-
+  
   useEffect(() => {
     const handleNewMessage = (newMessage) => {
       if (newMessage.senderId === conversation._id) {
@@ -19,9 +19,7 @@ function Conversations({ conversation,setSideNav}) {
          }       
       }
     };  
-
     socket.on("newMessage", handleNewMessage);
-
     return () => {
       socket.off("newMessage", handleNewMessage);
     };

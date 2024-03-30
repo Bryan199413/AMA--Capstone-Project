@@ -16,6 +16,13 @@ function SideNav({ setSideNav }) {
     setTab(tab);
   };
 
+  const handleSelect = () => {
+    setSelectedConversation('New Chat');
+    if (setSideNav){
+      setSideNav(false)
+    }
+  }
+
   return (
     <div className="flex flex-col w-72 h-full bg-base-200 p-2 z-20">
       <div className="flex justify-center items-center text-2xl min-h-[5rem]">
@@ -40,7 +47,7 @@ function SideNav({ setSideNav }) {
 
       <div className={tab === 'Chats' ? 'block' : 'hidden'}>
         <div className={`flex justify-center text-sm hover:bg-base-100 p-2 my-1 rounded-md cursor-pointer ${selectedConversation === 'New Chat' ? 'bg-base-100' : ''}`}
-          onClick={() => setSelectedConversation('New Chat')}>
+          onClick={handleSelect}>
           <RiChatNewLine  size={20}/>
           <h1 className='px-1'>New chat</h1>
         </div>

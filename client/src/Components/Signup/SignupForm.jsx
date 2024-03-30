@@ -62,7 +62,7 @@ function SignupForm() {
                 </div>
               <div className="form-control">
               <label htmlFor='username' className="label">
-                  <span className="label-text font-bold">Phone Number Verification</span>
+                  <span className="label-text font-bold">Phone number verification</span>
                 </label>
                 <label className="input input-bordered flex items-center gap-2">
                   <PhoneInput country={'in'}
@@ -72,7 +72,7 @@ function SignupForm() {
                 </label>
               </div>
               <div className="form-control mt-6">
-                <button className="text-base-200 btn bg-[#41B8D5] hover:bg-[#58d7f7]" disabled={loading}>
+                <button type='submit' className="text-base-200 btn bg-[#41B8D5] hover:bg-[#58d7f7]" disabled={loading}>
                   {loading ? <span className="loading loading-spinner]"></span> : 'Continue'}
                 </button>
               </div>

@@ -6,10 +6,12 @@ import Home from './pages/Home';
 import {Toaster} from 'react-hot-toast';
 import { useAuthContext } from './context/AuthContext';
 import useListenMessages from './hooks/useListenMessages';
+import useListenRoom from './hooks/useListenRoom';
 
 function App() {
   const {authUser} = useAuthContext();
   useListenMessages();
+  useListenRoom();
   return (
     <div className='font-open-sans'>
         <Routes>

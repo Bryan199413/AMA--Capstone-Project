@@ -62,11 +62,17 @@ export const verifyOtp = async (req,res) => {
 
       if(rightOtpFind.phoneNumber === phoneNumber && validUser){
           const newUser = new User(_.pick(rightOtpFind,["username","password","phoneNumber","avatar"]));
-          if(newUser){
-            generateTokenAndSetCookie(newUser._id, res);
-            await newUser.save();
-            await Otp.deleteMany({phoneNumber:rightOtpFind.phoneNumber});
-            return res.status(201).json(newUser.username);
+          await newUser.save();
+          await Otp.deleteMany({phoneNumber:rightOtpFind.phoneNumber});
+          
+          const user = await User.findOne({username:newUser.username});    
+          if(user){
+            generateTokenAndSetCookie(user._id, res);
+            return res.status(200).json({
+              _id: user._id,
+              username: user.username,
+              avatar: user.avatar,
+            })
             }else{
               return res.status(400).json({error:"Invalid user Data"})
             }

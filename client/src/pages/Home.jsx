@@ -18,9 +18,7 @@ function Home() {
           <MessageContainer/>
           <MessageInput />
         </div>
-          
             
-         
       </div>         
     </div>
   )

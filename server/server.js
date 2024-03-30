@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import userRoutes from './Routes/user.js'
 import messageRoutes from './Routes/message.js'
+import roomRoutes from './Routes/room.js'
 
 import connectToMongoDB from "./db/connectToMongoDB.js";
 import { app, server } from './socket/socket.js'
@@ -16,6 +17,7 @@ app.use(cookieParser());
 
 app.use('/api/users',userRoutes);
 app.use('/api/messages',messageRoutes);
+app.use('/api/rooms',roomRoutes)
 
 server.listen(PORT, () => {
     connectToMongoDB();
