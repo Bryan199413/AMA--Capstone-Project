@@ -1,6 +1,6 @@
 import { useState } from "react"
 import useConversation from "../zustand/useConversation"
-import toast from 'react-hot-toast'
+import { toast } from 'sonner'
 import sentMessageSound from '../assets/sounds/sentSound.wav'
 
 const useSendMessage = () => {

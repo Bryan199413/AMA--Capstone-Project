@@ -23,7 +23,7 @@ function Conversations({ conversation,setSideNav}) {
     return () => {
       socket.off("newMessage", handleNewMessage);
     };
-  }, [socket,conversation.id,messages]);
+  }, [socket,conversation.id,messages,selectedConversation]);
 
   const handleSelect = () => {
     setSelectedConversation(conversation)

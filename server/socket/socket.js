@@ -1,7 +1,7 @@
 import { Server} from 'socket.io';
 import http from 'http';
 import express from 'express';
-
+import Room from '../Models/Room.js';
 const app = express();
 
 const server = http.createServer(app);
@@ -30,11 +30,27 @@ io.on('connection',(socket) => {
 
     io.emit("getOnlineUsers",Object.keys(userSocketMap));
 
-    socket.on("disconnect",() => {
+    socket.on("disconnect", async () => {
         console.log("user disconnected",socket.id)
         delete userSocketMap[userId];
         io.emit("getOnlineUsers",Object.keys(userSocketMap));
 
+        try {           
+            const deletedRoom = await Room.findOneAndDelete({ participants: userId });
+            if(!deletedRoom) return;
+            const updatedRoom = null;
+            for (const participantId of deletedRoom.participants) {
+                const roomSocketId = getParticipantSocketId(participantId);
+                    
+                if (roomSocketId) {
+                    io.to(roomSocketId).emit("updatedRoom",updatedRoom);
+                }
+            }
+            console.log("Room deleted:",deletedRoom._id);
+        } catch (error) {
+            console.error("Error deleting room:", error);
+        }
+          
     })
 })
 

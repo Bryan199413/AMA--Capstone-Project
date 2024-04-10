@@ -11,7 +11,7 @@ function Messages() {
       lastMessageRef.current?.scrollIntoView({behavior : "smooth"});
     },0);
   },[messages]);
-
+   
   return (
     <div className='max-w-[850px] mx-auto w-full'>
       {!loading && 

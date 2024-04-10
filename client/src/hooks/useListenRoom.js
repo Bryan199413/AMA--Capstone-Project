@@ -4,18 +4,19 @@ import useMatching from "../zustand/useMatching";
 
 const useListenRoom = () => {
   const { socket } = useSocketContext();
-  const { room, setRoom } = useMatching();
-
+  const { room, setRoom, deleteRoomMessages } = useMatching();
+  
   useEffect(() => {
     socket?.on("updatedRoom", (updatedRoom) => {
-        if(updatedRoom?.id === room?.id) {
-          if (updatedRoom.participants.length === 2) {
+        if (updatedRoom === null) {
+            setRoom(null);
+            deleteRoomMessages();
+        } else if (updatedRoom && updatedRoom.id === room?.id) {
             setRoom(updatedRoom);
-          }
-      }
+        }
     });
     return () => socket?.off("updatedRoom");
-  }, [socket,room,setRoom]);
+  }, [socket, room, setRoom]);
 };
 
 export default useListenRoom;

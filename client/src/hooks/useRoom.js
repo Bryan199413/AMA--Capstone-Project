@@ -1,5 +1,5 @@
 import { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from 'sonner'
 import useMatching from '../zustand/useMatching'
 import { useAuthContext } from '../context/AuthContext';
 
@@ -27,7 +27,7 @@ const useRoom = () => {
       const rooms = await res.json();
     
       if (rooms.length > 0) {
-        const getRoom = await fetch(`/api/rooms/getroom/${rooms[0]._id}`);
+        const getRoom = await fetch(`/api/rooms/setroom/${rooms[0]._id}`);
         const room = await getRoom.json()
         setRoom(room);
        
@@ -36,13 +36,13 @@ const useRoom = () => {
         setRoom(newRoom);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.error);
     } finally {
       setLoading(false);
     }
   };
 
-  return { loading,fetchRoom,room};
+  return { loading,fetchRoom,room };
 };
 
 export default useRoom;

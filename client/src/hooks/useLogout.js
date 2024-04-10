@@ -1,8 +1,11 @@
 import { useAuthContext } from '../context/AuthContext';
-import toast from "react-hot-toast";
+import { toast } from 'sonner'
+import useMatching from '../zustand/useMatching';
 
 const useLogout = () => {
  const {setAuthUser} = useAuthContext()
+ const {setRoom,deleteRoomMessages} = useMatching()
+
  const logout = async () => {
   try {
     const res = await fetch("/api/users/logout",{
@@ -17,6 +20,8 @@ const useLogout = () => {
     }
     localStorage.removeItem("machimachi-user")
     setAuthUser(null);
+    setRoom(null);
+    deleteRoomMessages();
   } catch (error) {
      toast.error(error.message)  
   }

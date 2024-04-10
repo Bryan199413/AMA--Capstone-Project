@@ -1,5 +1,5 @@
 import { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from 'sonner'
 import { useAuthContext } from '../context/AuthContext';
 
 const useLogin = () => {
@@ -36,7 +36,7 @@ export default useLogin;
 
 function handleInputErrors(username, password) {
 	if (!username || !password) {
-		toast.error("Please fill in all fields");
+		toast.warning("Please fill in all fields");
 		return false;
 	}
 

@@ -1,11 +1,15 @@
 // Sa iyong router file (../Routes/room.js)
 import express from "express";
-import { createRoom, getRoom } from '../Controllers/room.js';
+import { createRoom, deleteRoom, roomMessages, setRoom} from '../Controllers/room.js';
 
 const router = express.Router();
 
 router.all('/:id', createRoom);
 
-router.get('/getroom/:id',getRoom)
+router.get('/setroom/:id',setRoom)
+
+router.post('/deleteroom/:id',deleteRoom)
+
+router.post('/messages/:id',roomMessages)
 
 export default router;

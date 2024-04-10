@@ -5,22 +5,41 @@ import { MdInsertEmoticon } from "react-icons/md";
 import useSendMessage from '../../hooks/useSendMessage';
 import useConversation from '../../zustand/useConversation';
 import MatchingButton from '../MatchingButton';
+import useMatching from '../../zustand/useMatching';
+import useRoomMessage from '../../hooks/useRoomMessage';
 
 function MessageInput() {
+  const {room} = useMatching();
+  const [disabled,setDisabled] = useState(true)
   const { selectedConversation } = useConversation();
   const [message,setMessage] = useState("");
-  const {loading,sendMessage} = useSendMessage()
+  const {sendMessage,loading} = useSendMessage()
+  const {sendMessageRoom,loadingM} = useRoomMessage();
   const inputRef = useRef(null)
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, [selectedConversation]);
+    if (room?.status === "chatting") {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+      setMessage("");
+    }
+  }, [room?.status]);
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    inputRef.current.focus();
+    setMessage("")
+  }, [selectedConversation,]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!message || !message.trim()) return;
-    sendMessage(message);
-    setMessage("");
+    if(selectedConversation === "New Chat"){
+      sendMessageRoom(message) 
+    } else {
+       sendMessage(message);
+    }  
+      setMessage("");
   }
 
   return (
@@ -28,7 +47,8 @@ function MessageInput() {
         <div className="flex items-center gap-2 max-w-[850px] mx-auto px-1">
           <MatchingButton/>
           <div><TbPhotoAi size={30} /></div> 
-          <input  
+          <input
+          disabled={selectedConversation === "New Chat" && disabled}
           type="text" 
           className="grow border px-4 py-2 rounded-full border-none bg-base-300 outline-none"
           placeholder="Type a message..."
@@ -37,10 +57,9 @@ function MessageInput() {
           onChange={(e) => setMessage(e.target.value)}
           />
           <div><MdInsertEmoticon size={30} /></div>
-          {loading ? <div className='loading loading-spinner'></div> : <button type='submit'><BiSend size={35} className='text-blue-700' /></button>}
+          {loading || loadingM ? <div className='loading loading-spinner'></div> : <button type='submit'><BiSend size={35} className='text-blue-700' /></button>}
         </div>
-    </form>  
-              
+    </form>              
   )
 }
 

@@ -13,16 +13,16 @@ function Message({message}) {
   
   return (
      <div>
-        <div className={`chat ${chatClassName} mx-2`}>
-          <div className="chat-image avatar">
-            <div className="w-9 rounded-full">
-              <img alt="Tailwind CSS chat bubble component" src={avatar} />
-            </div>
+      <div className={`chat ${chatClassName} mx-2`}>
+        <div className="chat-image avatar">
+          <div className="w-9 rounded-full">
+            <img alt="Tailwind CSS chat bubble component" src={avatar} />
           </div>
-          <div className={`chat-bubble ${bubbleBgColor} whitespace-normal break-words ...`}>{message.message}</div>
-          <div className="chat-footer opacity-50">
-             <time className="text-xs opacity-50">{formattedTime}</time>
-          </div>
+        </div>
+        <div className={`chat-bubble ${bubbleBgColor} whitespace-normal break-words ...`}>{message.message}</div>
+        <div className="chat-footer opacity-50">
+            <time className="text-xs opacity-50">{formattedTime}</time>
+        </div>
       </div>
     </div>
   )

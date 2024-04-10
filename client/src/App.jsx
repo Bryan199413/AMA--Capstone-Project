@@ -3,7 +3,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup';
 import PageNotFound from './pages/PageNotFound';
 import Home from './pages/Home';
-import {Toaster} from 'react-hot-toast';
+import { Toaster} from 'sonner'
 import { useAuthContext } from './context/AuthContext';
 import useListenMessages from './hooks/useListenMessages';
 import useListenRoom from './hooks/useListenRoom';
@@ -20,7 +20,7 @@ function App() {
           <Route path='/signup' element={authUser ?  <Navigate to='/' /> : <Signup />} />
           <Route path="*" element={<PageNotFound/>} /> 
         </Routes>
-        <Toaster/>
+        <Toaster position="top-center" richColors/>
     </div>
   )
 }
