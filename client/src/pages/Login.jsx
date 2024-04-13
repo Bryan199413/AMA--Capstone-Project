@@ -52,7 +52,7 @@ const Login = () => {
               </div>
               <div className="form-control mt-6">
                 <button className="text-base-200 btn bg-[#41B8D5] hover:bg-[#58d7f7]" disabled={loading}>
-                  {loading ? <span className="loading loading-spinner]"></span> : "Continue"}
+                  {loading ? <span className="loading loading-spinner"></span> : "Continue"}
                 </button>
               </div>
               <label className="label">

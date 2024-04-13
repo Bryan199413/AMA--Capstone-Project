@@ -24,11 +24,11 @@ function SignupForm() {
           
       }
   return (
-    <div>
+    <>
         {!displayOtpForm ? (
         <div className="hero-content w-full">
-          <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-            <div className='flex flex-col items-center px-[32px] pt-[32px]'>
+          <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100 ">
+            <div className='flex flex-col items-center px-[32px] pt-[32px] '>
               <h1 className="text-4xl font-black"><span className='text-[#41B8D5]'>Machi</span><span className='text-[#EEC0C2]'>machi</span></h1>
               <h1 className='text-2xl mt-2'>Sign up</h1>
             </div>
@@ -61,7 +61,7 @@ function SignupForm() {
                   </label>
                 </div>
               <div className="form-control">
-              <label htmlFor='username' className="label">
+              <label className="label">
                   <span className="label-text font-bold">Phone number verification</span>
                 </label>
                 <label className="input input-bordered flex items-center gap-2">
@@ -72,8 +72,8 @@ function SignupForm() {
                 </label>
               </div>
               <div className="form-control mt-6">
-                <button type='submit' className="text-base-200 btn bg-[#41B8D5] hover:bg-[#58d7f7]" disabled={loading}>
-                  {loading ? <span className="loading loading-spinner]"></span> : 'Continue'}
+                <button  className="text-base-200 btn bg-[#41B8D5] hover:bg-[#58d7f7]" disabled={loading}>
+                  {loading ? <span className="loading loading-spinner"></span> : 'Continue'}
                 </button>
               </div>
               <label className="label">
@@ -84,7 +84,7 @@ function SignupForm() {
           </form>
         </div>   
       </div>) : (<Otp phoneNumber={inputs.phoneNumber} Resend={handleSubmit} displayOtpForm={setDisplayOtpForm}/>) }
-    </div>
+   </>
   )
 }
 

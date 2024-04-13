@@ -1,6 +1,4 @@
-import React, { useState } from 'react'
 import SignupForm from '../Components/Signup/SignupForm'
-
 
 function Signup() {
  

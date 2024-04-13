@@ -36,10 +36,12 @@
 .avatar.online:before {
     @apply !w-[20%] h-[20%]
 }
+
+
 /* messageContainer Component End*/
 
-/* babalikan ko na bug */
-/* .react-tel-input .flag-dropdown :hover {
+
+.react-tel-input .flag-dropdown :hover {
     @apply !bg-base-200;    
 }
 
@@ -51,6 +53,18 @@
     @apply !bg-base-200;
 } 
 
+.react-tel-input .country-list :hover{
+    @apply !bg-base-300;
+} 
+
 .react-tel-input .selected-flag :hover {
     @apply !bg-base-200;
-} */
+}
+
+.react-tel-input .country-list .country.highlight {
+   @apply !bg-base-300
+}
+
+.react-tel-input .form-control {
+    @apply !w-full
+}

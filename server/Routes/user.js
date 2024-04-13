@@ -1,5 +1,5 @@
 import express from "express";
-import { login, logout, signup, getUsersForSidebar, verifyOtp } from "../Controllers/user.js";
+import { login, logout, signup, getUsersForSidebar, verifyOtp, generateAvatar, changeAvatar } from "../Controllers/user.js";
 import protectRoute from "../middleware/protectRoute.js";
 
 const router = express.Router();
@@ -14,6 +14,10 @@ router.post("/login", login);
 router.post("/logout", logout);
 
 router.get("/",protectRoute,getUsersForSidebar);
+
+router.get("/generateAvatar",generateAvatar);
+
+router.patch("/changeAvatar/:id",changeAvatar)
 
 
 

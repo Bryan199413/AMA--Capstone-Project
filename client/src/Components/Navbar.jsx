@@ -4,7 +4,7 @@ import SideNav from './Sidenav/SideNav';
 import useConversation from '../zustand/useConversation';
 
 function Navbar() {
-  const {selectedConversation, setSelectedConversation} = useConversation() 
+  const {selectedConversation} = useConversation() 
 
   const storedTheme = localStorage.getItem("theme") || "light";
   const [theme, setTheme] = useState(storedTheme);

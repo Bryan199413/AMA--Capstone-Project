@@ -130,6 +130,38 @@ export const getUsersForSidebar = async (req,res) => {
   }
 }
 
+export const generateAvatar = (req,res) => {
+  try {
+    const seedPhrase = otpGenerator.generate(20,{ specialChars: false,});
+    const generateAvatar = `https://api.dicebear.com/7.x/adventurer/svg?seed=${seedPhrase}&radius=10&backgroundType=solid,gradientLinear&backgroundRotation=-320,-340,-350,-360,-330,-310,-300,-290,-280,-270,-260,-250,-240,-230,-220&earringsProbability=20&featuresProbability=0&glassesProbability=20&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
+    res.status(200).json(generateAvatar)
+  } catch (error) {
+    console.error("Error in generateAvatar:", error); 
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+export const changeAvatar = async (req, res) => {
+  try {
+    const { id: userId } = req.params; 
+    const newAvatarUrl = req.body.avatar; 
+    const user = await User.findOneAndUpdate({ _id: userId }, { avatar: newAvatarUrl }, { new: true });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    
+    return res.status(200).json({
+        _id: user._id,
+        username: user.username,
+        avatar: user.avatar,
+      })
+  } catch (error) {
+    console.error("Error in changeAvatar:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 // module.exports.signUp = async (req,res) => {
 //   const user = await User.findOne({number:req.body.number});
 
