@@ -8,10 +8,9 @@ function MatchingButton() {
   const {selectedConversation} = useConversation()
   const {room} = useMatching();
   const {fetchRoom,loading} = useRoom();
-  const {deleteRoom} = useDeleteRoom();
+  const {deleteRoom,loadingD} = useDeleteRoom();
   const [btnColor,setBtnColor] = useState("")
-  console.log(room)
-
+  
   useEffect(() => {
     if (!room) {
       setBtnColor("bg-blue-700 hover:bg-blue-600");
@@ -25,12 +24,12 @@ function MatchingButton() {
   const handleStart = () => {
       fetchRoom();
   };
-
+  
   return (
     <div className={`${selectedConversation === "New Chat" ? '' : 'hidden'}`} >
-        {!room && (<div className={`btn ${btnColor} text-white border-none`} onClick={loading ? null : handleStart}>Start</div>)}
-        {room?.status === "waiting"  && (<div className={`btn ${btnColor} text-white border-none`} onClick={deleteRoom}>Stop</div>)}
-        {room?.status === "chatting"  && (<div className={`btn ${btnColor} text-white border-none`} onClick={deleteRoom}>End</div>)}
+        {!room && (<button type="button" className={`btn ${btnColor} px-0 w-16 text-white border-none`} onClick={loading ? null : handleStart}>Start</button>)}
+        {room?.status === "waiting"  && (<button type="button" className={`btn ${btnColor} px-0 w-16 text-white border-none`} onClick={loadingD ? null : deleteRoom}>Stop</button>)}
+        {room?.status === "chatting"  && (<button type="button" className={`btn ${btnColor} px-0 w-16 text-white border-none`} onClick={loadingD ? null : deleteRoom}>End</button>)}
     </div>
   )
 }

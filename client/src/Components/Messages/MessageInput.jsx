@@ -41,12 +41,12 @@ function MessageInput() {
     }  
       setMessage("");
   }
-
+ 
   return (
     <form className='mx-1 py-2' onSubmit={handleSubmit}>
         <div className="flex items-center gap-2 max-w-[850px] mx-auto px-1">
           <MatchingButton/>
-          <div><TbPhotoAi size={30} /></div> 
+          <div><TbPhotoAi size={27} /></div> 
           <input
           disabled={selectedConversation === "New Chat" && disabled}
           type="text" 
@@ -56,8 +56,12 @@ function MessageInput() {
           value={message} 
           onChange={(e) => setMessage(e.target.value)}
           />
-          <div><MdInsertEmoticon size={30} /></div>
-          {loading || loadingM ? <div className='loading loading-spinner'></div> : <button type='submit'><BiSend size={35} className='text-blue-700' /></button>}
+          <div><MdInsertEmoticon size={27} /></div>
+          <button type='submit' 
+          disabled={loading || loadingM ? true : false}>
+            <BiSend size={35} 
+          className={`btn ${loading || loadingM ? 'text-base-300' : 'text-blue-700'} p-0 bg-transparent hover:bg-transparent border-none shadow-none `} />
+          </button>
         </div>
     </form>              
   )

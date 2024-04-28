@@ -7,11 +7,13 @@ import { Toaster} from 'sonner'
 import { useAuthContext } from './context/AuthContext';
 import useListenMessages from './hooks/useListenMessages';
 import useListenRoom from './hooks/useListenRoom';
+import useListenFriendRequest from './hooks/useListenFriendRequest';
 
 function App() {
   const {authUser} = useAuthContext();
   useListenMessages();
   useListenRoom();
+  useListenFriendRequest();
   return (
     <div className='font-open-sans'>
         <Routes>

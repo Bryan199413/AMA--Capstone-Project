@@ -63,7 +63,7 @@ function Menu() {
           <ul className="cursor-pointer">
             <li className={`${selectedChangeAvatar ? 'bg-base-100' : ''} hover:bg-base-100 flex items-center p-2 m-2 rounded-md`} onClick={toggleChangeAvatar}>
               <RxAvatar size={20} />
-              <span className="mx-2">Change avatar</span>
+              <span className="mx-2">Avatar</span>
             </li>
              <ChangeAvatar toggleMenu={toggleMenu}/>
             <li className={`${selectedSettings ? 'bg-base-100' : ''} hover:bg-base-100 flex items-center p-2 m-2 rounded-md`} onClick={toggleSettings}>

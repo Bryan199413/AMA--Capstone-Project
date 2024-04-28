@@ -2,24 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { RiMenuUnfoldLine } from "react-icons/ri";
 import SideNav from './Sidenav/SideNav';
 import useConversation from '../zustand/useConversation';
+import FriendRequests from './FriendRequests';
 
 function Navbar() {
-  const {selectedConversation} = useConversation() 
+  const {selectedConversation} = useConversation();
+  const [sideNav,setSideNav] = useState(false); 
+  // const storedTheme = localStorage.getItem("theme") || "light";
+  // const [theme, setTheme] = useState(storedTheme);
 
-  const storedTheme = localStorage.getItem("theme") || "light";
-  const [theme, setTheme] = useState(storedTheme);
 
-  const [sideNav,setSideNav] = useState(false)
-
-  const handleToggle = (e) => {
-    const newTheme = e.target.checked ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-  };
+  // const handleToggle = (e) => {
+  //   const newTheme = e.target.checked ? "dark" : "light";
+  //   setTheme(newTheme);
+  //   localStorage.setItem("theme", newTheme);
+  // };
   
-  useEffect(() => {
-    document.querySelector("html").setAttribute("data-theme", theme);
-  }, [theme]);
+  // useEffect(() => {
+  //   document.querySelector("html").setAttribute("data-theme", theme);
+  // }, [theme]);
 
   return (
     <div className="navbar bg-base-100 border-base-300 shadow-lg z-30">
@@ -29,7 +29,7 @@ function Navbar() {
           <div className="drawer-content">
             <label htmlFor="my-drawer" className="btn drawer-button" ><RiMenuUnfoldLine size={30} /></label>
           </div> 
-          <div className="drawer-side"> 
+          <div className="drawer-side z-[1]"> 
             <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
             <SideNav setSideNav={setSideNav} />
           </div>
@@ -44,7 +44,17 @@ function Navbar() {
           <span className="p-2">{selectedConversation.username}</span>        
         </div>)}
       </div>
-      <div className="flex-none">
+       <div className='flex justify-center items-center'>
+          <FriendRequests/> 
+       </div>
+    </div>
+  );
+}
+
+export default Navbar;
+
+
+{/* <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
           <label className="swap swap-rotate">
             <input type="checkbox" className="theme-controller" value={"synthwave"} onChange={handleToggle}  checked={theme === "dark"} /> 
@@ -52,9 +62,8 @@ function Navbar() {
             <svg className="swap-off fill-current w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z"/></svg>
           </label> 
         </ul>
-      </div>
-    </div>
-  );
-}
+      </div> */}
 
-export default Navbar;
+
+
+    

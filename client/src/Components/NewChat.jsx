@@ -36,7 +36,7 @@ function NewChat() {
   return (
     <>
       {!room && (<div className='text-center'>New Chat</div>)}
-      {room?.status === "waiting" && (<div className='h-full flex'><span className="loading loading-infinity loading-lg text-info m-auto"></span></div>)}
+      {room?.status === "waiting" && (<div className='h-full flex'><span className="loading loading-infinity w-40 text-info m-auto"></span></div>)}
       {room?.status === "chatting" && room?.participants.every(participant => participant.roomId === room?.id) && (
         <div className='max-w-[850px] mx-auto w-full'>
             {roomMessages.length > 0 &&  

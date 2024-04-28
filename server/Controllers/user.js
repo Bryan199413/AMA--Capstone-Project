@@ -3,10 +3,12 @@ import bcrypt from "bcrypt";
 import _ from "lodash";
 // const axios = require('axios');
 import otpGenerator from "otp-generator";
-// const client = require('twilio')(process.env.ACOUNT_SID, process.env.AUTH_TOKEN);
+// import twilio from 'twilio';
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 import User from "../Models/User.js";
 import Otp from "../Models/Otp.js";
+
+// const client = twilio(process.env.ACOUNT_SID, process.env.AUTH_TOKEN);
 
 export const signup = async (req, res) => {
   try {
@@ -30,7 +32,7 @@ export const signup = async (req, res) => {
       const hashedPassword = await bcrypt.hash(password,salt);
       const OTP = otpGenerator.generate(6,{digits: true, specialChars: false, upperCaseAlphabets: false, lowerCaseAlphabets:false});
       const hashedOtp = await bcrypt.hash(OTP,salt)
-      const generateAvatar = `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}&radius=10&backgroundType=solid,gradientLinear&backgroundRotation=-320,-340,-350,-360,-330,-310,-300,-290,-280,-270,-260,-250,-240,-230,-220&earringsProbability=20&featuresProbability=0&glassesProbability=20&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
+      const generateAvatar = `https://api.dicebear.com/8.x/initials/svg?seed=${username}`;
       console.log(OTP);
 
       const newOtp = new Otp({
@@ -161,6 +163,10 @@ export const changeAvatar = async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+
+
 
 // module.exports.signUp = async (req,res) => {
 //   const user = await User.findOne({number:req.body.number});

@@ -10,7 +10,7 @@ const useGenerateAvatar = () => {
         try {
             const res = await fetch('/api/users/generateAvatar/');
             const data = await res.json();
-            if(data.error) {
+            if(!data) {
                 throw new Error(data.error);
             }
             setNewAvatar(data)

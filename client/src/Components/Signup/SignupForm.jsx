@@ -21,8 +21,12 @@ function SignupForm() {
         if(success){
           setDisplayOtpForm(true)
         }
-          
       }
+      const handlePhoneInputKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSubmit(e);
+        }
+    };    
   return (
     <>
         {!displayOtpForm ? (
@@ -67,12 +71,13 @@ function SignupForm() {
                 <label className="input input-bordered flex items-center gap-2">
                   <PhoneInput country={'in'}
                     value={inputs.phoneNumber}
-                    onChange={(phoneNumber) => setInputs({...inputs, phoneNumber:phoneNumber.startsWith("+") ? phoneNumber : "+" + phoneNumber})}
+                    onChange={(phoneNumber) => setInputs({...inputs, phoneNumber:phoneNumber.startsWith("+") ? phoneNumber : "+" + phoneNumber})}   
+                    onKeyDown={handlePhoneInputKeyPress}           
                 />  
                 </label>
               </div>
               <div className="form-control mt-6">
-                <button  className="text-base-200 btn bg-[#41B8D5] hover:bg-[#58d7f7]" disabled={loading}>
+                <button type='submit' className="text-base-200 btn bg-[#41B8D5] hover:bg-[#58d7f7]" disabled={loading}>
                   {loading ? <span className="loading loading-spinner"></span> : 'Continue'}
                 </button>
               </div>

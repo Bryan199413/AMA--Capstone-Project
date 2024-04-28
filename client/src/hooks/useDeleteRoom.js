@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 
 const useDeleteRoom = () => {
     const {room,setRoom} = useMatching();
-    const [loading,setLoading] = useState(false);
+    const [loadingD,setLoading] = useState(false);
    
     const deleteRoom = async () => {
         setLoading(true);
@@ -22,7 +22,7 @@ const useDeleteRoom = () => {
         }
     }
    
-    return {deleteRoom};
+    return {deleteRoom,loadingD};
 }
 
 export default useDeleteRoom
