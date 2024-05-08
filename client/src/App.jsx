@@ -8,12 +8,14 @@ import { useAuthContext } from './context/AuthContext';
 import useListenMessages from './hooks/useListenMessages';
 import useListenRoom from './hooks/useListenRoom';
 import useListenFriendRequest from './hooks/useListenFriendRequest';
+import useListenFriend from './hooks/useListenFriend';
 
 function App() {
   const {authUser} = useAuthContext();
   useListenMessages();
   useListenRoom();
   useListenFriendRequest();
+  useListenFriend();
   return (
     <div className='font-open-sans'>
         <Routes>

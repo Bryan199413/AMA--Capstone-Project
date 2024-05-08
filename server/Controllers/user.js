@@ -6,6 +6,7 @@ import otpGenerator from "otp-generator";
 // import twilio from 'twilio';
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 import User from "../Models/User.js";
+import Friend from "../Models/Friend.js";
 import Otp from "../Models/Otp.js";
 
 // const client = twilio(process.env.ACOUNT_SID, process.env.AUTH_TOKEN);
@@ -65,6 +66,7 @@ export const verifyOtp = async (req,res) => {
       if(rightOtpFind.phoneNumber === phoneNumber && validUser){
           const newUser = new User(_.pick(rightOtpFind,["username","password","phoneNumber","avatar"]));
           await newUser.save();
+          await Friend.create({userId:newUser.id});
           await Otp.deleteMany({phoneNumber:rightOtpFind.phoneNumber});
           
           const user = await User.findOne({username:newUser.username});    

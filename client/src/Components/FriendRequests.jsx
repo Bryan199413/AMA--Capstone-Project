@@ -1,11 +1,12 @@
 import { BsPersonFillAdd } from "react-icons/bs";
 import useGetFriendRequests from "../hooks/useGetFriendRequests";
 import useFriend from "../zustand/useFriend";
+import DeclineButton from "./DeclineButton";
 
 function FriendRequests() {
   const { loading,} = useGetFriendRequests();
   const {friendRequests} = useFriend();
-
+  
   return (
     <div className="dropdown dropdown-end">
       <div tabIndex={0} role="button" className="btn btn-ghost btn-circle z-0">
@@ -32,7 +33,9 @@ function FriendRequests() {
                   </div>
                   <div className="flex gap-1">
                     <button className="btn btn-sm px-0 w-16 btn-primary">Accept</button>
-                    <button className="btn btn-sm px-0 w-16">Decline</button>
+                    <div className="btn btn-sm px-0 w-16">
+                      <DeclineButton friendRequestId={request.id} />
+                      </div> 
                   </div>
                 </div>
               ))}
