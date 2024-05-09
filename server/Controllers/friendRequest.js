@@ -35,13 +35,17 @@ export const sendFriendRequest = async (req, res) => {
             avatar: request.senderId.avatar,
             receiverId:receiverId
         }
-
+        
         const receiverSocketId = getReceiverSocketId(receiverId);
 		if (receiverSocketId) {
 			io.to(receiverSocketId).emit("newFriendRequest", newFriendRequest);
 		}
-
-        res.status(201).json(friendRequest);
+        const newRequested = {
+            _id:friendRequest.id,
+            senderId:senderId,
+            receiverId:friendRequest.receiverId,
+        }
+        res.status(201).json(newRequested);
     } catch (error) {
         console.log("Error in sendFriendRequest controller: ", error.message);
         res.status(500).json({ error: "Internal server error" });
@@ -66,21 +70,16 @@ export const getFriendRequests = async (req,res) => {
     }
 }
 
-export const checkRequest = async (req,res) => {
+export const getUserRequests = async (req,res) => {
     try {
         const userId = req.user._id;
-        const { id: receiverId } = req.params;
-        
-        const existingRequest = await FriendRequest.findOne({
-            senderId:userId,
-            receiverId:receiverId,
-            status:"pending"
-        });
+        const existingRequest = await FriendRequest.find({senderId:userId}).select("receiverId");
 
+      
         if(!existingRequest) return res.status(200).json("No requested yet");
         return res.status(200).json(existingRequest);
     } catch (error) {
-        console.log("Error in checkRequest controller: ", error.message);
+        console.log("Error in getUserRequests controller: ", error.message);
         res.status(500).json({ error: "Internal server error" });
     }
 }
@@ -109,8 +108,13 @@ export const declineRequest = async (req,res) => {
     try {
         const { id:friendRequestId} = req.params;
         const existingRequest = await FriendRequest.findByIdAndDelete(friendRequestId);
-        res.status(200).json(existingRequest)
-
+        const receiverId = existingRequest.senderId;
+        const receiverSocketId = getReceiverSocketId(receiverId);
+     
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit("declineRequest", friendRequestId);
+        }
+        res.status(200).json(existingRequest);
     } catch (error) {
         console.log("Error in declineRequest controller: ", error.message);
         res.status(500).json({ error: "Internal server error" });

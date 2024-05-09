@@ -4,7 +4,7 @@ import useFriend from '../zustand/useFriend';
 
 const useGetFriendRequests = () => {
   const [loading,setLoading] = useState();
-  const {friendRequest,setFriendRequests,setRequested} = useFriend();
+  const {friendRequest,setFriendRequests} = useFriend();
   
   useEffect(() => {
     const getFriendRequests = async () => {

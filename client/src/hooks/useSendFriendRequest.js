@@ -8,7 +8,7 @@ const useSendFriendRequest = () => {
   const [loading,setLoading] = useState(false);
   const { room } = useMatching();
   const {authUser} = useAuthContext();
-  const {setRequested} = useFriend();
+  const {requested,setRequested} = useFriend();
   const participantsArray = room?.participants.filter(participant => participant !== authUser._id);
   const receiverId = participantsArray ? participantsArray[0] : null;
 
@@ -21,8 +21,8 @@ const useSendFriendRequest = () => {
                 'Content-Type' : 'application/json'
               },
         })
-        const data = await res.json();
-      setRequested(data);
+        const newRequested = await res.json();
+      setRequested([...requested,newRequested]);
     } catch (error) {
         toast.error(error.message);
     } finally {

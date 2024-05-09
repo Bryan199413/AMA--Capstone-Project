@@ -2,14 +2,12 @@ import useSendFriendRequest from '../hooks/useSendFriendRequest'
 import useFriend from '../zustand/useFriend';
 import useMatching from '../zustand/useMatching';
 import { useAuthContext } from '../context/AuthContext';
-import useCheckRequest from '../hooks/useCheckRequest';
 import useCancelFriendRequest from '../hooks/useCancelFriendRequest';
 import DeclineButton from './DeclineButton';
 import useAcceptRequest from '../hooks/useAcceptRequest';
 import useUnfriend from '../hooks/useUnfriend';
 
-function AddFriend() {
-    useCheckRequest();
+function AddFriend() { 
     const {requested,friendRequests,friends} = useFriend();
     const {loading,sendFriendRequest} = useSendFriendRequest();
     const {loadingCFR,cancelFriendRequest} = useCancelFriendRequest();
@@ -21,16 +19,17 @@ function AddFriend() {
     const receiverId = participantsArray ? participantsArray[0] : null;
     const isFriendRequestSent = receiverId && friendRequests.find(request => request.senderId === receiverId);
     const isAlreadyFriend = receiverId && friends.find(friend => friend._id === receiverId);
-    
+    const isAlreadyRequested = receiverId && requested.find(request => request.receiverId === receiverId)
+
   return (
     <>
-      {!isFriendRequestSent && !isAlreadyFriend  &&  requested  === "No requested yet" && 
+      {!isFriendRequestSent && !isAlreadyFriend  &&  !isAlreadyRequested && 
       (<button type='button' className='btn btn-sm btn-primary' onClick={loading ? null : sendFriendRequest}>
         Add friend
       </button>)}
       {isAlreadyFriend && (<button type='button' className='btn btn-sm btn-primary' onClick={()=> (loadingUnfriend ? null : unfriend(isAlreadyFriend._id))}>Unfriend</button>)}
-      {requested?.status === "pending"  &&
-       (<button type='button' className='btn btn-sm btn-primary' onClick={loadingCFR ? null : cancelFriendRequest}>
+      {isAlreadyRequested  && !isAlreadyFriend &&
+       (<button type='button' className='btn btn-sm btn-primary' onClick={() => (loadingCFR ? null : cancelFriendRequest(isAlreadyRequested._id))}>
         Cancel request
       </button>)}
       {isFriendRequestSent &&  (

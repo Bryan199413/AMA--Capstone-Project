@@ -2,9 +2,11 @@ import { BsPersonFillAdd } from "react-icons/bs";
 import useGetFriendRequests from "../hooks/useGetFriendRequests";
 import useFriend from "../zustand/useFriend";
 import DeclineButton from "./DeclineButton";
+import useAcceptRequest from "../hooks/useAcceptRequest";
 
 function FriendRequests() {
   const { loading,} = useGetFriendRequests();
+  const {loadingAccept,acceptRequest} = useAcceptRequest();
   const {friendRequests} = useFriend();
   
   return (
@@ -32,7 +34,7 @@ function FriendRequests() {
                     <div className="px-2 overflow-ellipsis w-24 overflow-hidden">{request.username}</div>
                   </div>
                   <div className="flex gap-1">
-                    <button className="btn btn-sm px-0 w-16 btn-primary">Accept</button>
+                    <button className="btn btn-sm px-0 w-16 btn-primary" onClick={() => (loadingAccept ? null : acceptRequest(request.id))}>Accept</button>
                     <div className="btn btn-sm px-0 w-16">
                       <DeclineButton friendRequestId={request.id} />
                       </div> 

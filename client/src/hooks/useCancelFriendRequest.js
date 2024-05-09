@@ -5,14 +5,15 @@ import { toast } from 'sonner'
 const useCancelFriendRequest = () => {
   const [loadingCFR,setLoading] = useState(false);
   const {requested,setRequested} = useFriend();
-  const cancelFriendRequest = async () => {
+  const cancelFriendRequest = async (friendId) => {
     setLoading(true);
     try {
-        await fetch(`api/friendRequests/cancel/${requested._id}`,{
+        await fetch(`api/friendRequests/cancel/${friendId}`,{
             method:"POST",
             headers:{"Content-Type" : "application/json"},
         });
-        setRequested("No requested yet");
+        const updatedRequested = requested.filter(requested => requested._id !== friendId); 
+        setRequested(updatedRequested);
     } catch (error) {
         toast.error(error.error);
     } finally {

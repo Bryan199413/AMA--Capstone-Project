@@ -2,19 +2,18 @@ import express from "express";
 import protectRoute from '../middleware/protectRoute.js'
 import { acceptFriendRequest,
          cancelRequest, 
-         checkRequest, 
          declineRequest,  
          getFriendRequests, 
+         getUserRequests, 
          sendFriendRequest } from "../Controllers/friendRequest.js";
 
 const router = express.Router();
 
 router.post("/send/:id", protectRoute,sendFriendRequest);
 
-
 router.get("/", protectRoute,getFriendRequests);
 
-router.get("/check/:id",protectRoute,checkRequest);
+router.get("/getUserRequests/",protectRoute,getUserRequests);
 
 router.post("/cancel/:id",protectRoute,cancelRequest);
 

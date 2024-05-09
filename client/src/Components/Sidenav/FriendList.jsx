@@ -6,7 +6,7 @@ function FriendList({setSideNav,friend,setTab}) {
    const {onlineUsers} = useSocketContext();
    const {setSelectedConversation} = useConversation();
    const isOnline = onlineUsers.includes(friend._id) 
-
+  
    const handleSelect = () => {
     setSelectedConversation(friend);
     setTab('Chats');

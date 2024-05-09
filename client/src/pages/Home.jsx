@@ -3,8 +3,10 @@ import Navbar from '../Components/Navbar'
 import SideNav from '../Components/Sidenav/SideNav'
 import MessageContainer from '../Components/Messages/MessageContainer'
 import MessageInput from '../Components/Messages/MessageInput'
+import useGetUserRequests from '../hooks/useGetUserRequests'
 
 function Home() {
+  useGetUserRequests();
   return (
     <div className='bg-base-100 h-screen'> 
      

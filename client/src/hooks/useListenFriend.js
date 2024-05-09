@@ -6,7 +6,7 @@ import { useAuthContext } from "../context/AuthContext";
 const useListenFriend = () => {
     const { socket } = useSocketContext();
     const { authUser } = useAuthContext();
-    const { friends, setFriends } = useFriend();
+    const { friends, setFriends,requested,setRequested } = useFriend();
     
     useEffect(() => {
       const handleNewFriend = (newFriend) => {
@@ -16,11 +16,14 @@ const useListenFriend = () => {
       };
       
       const handleUnfriend = (friendId) => {
-        const index = friends.findIndex(friend => friend._id === friendId);
-
-          const updatedFriends = [...friends];
-          updatedFriends.splice(index, 1);
-          setFriends(updatedFriends);
+        const indexFriends = friends.findIndex(friend => friend._id === friendId);
+        const indexRequested = requested.findIndex(requested => requested._id === friendId);
+        const updatedRequested = [...requested];
+        const updatedFriends = [...friends];
+        updatedRequested.splice(indexRequested, 1);
+        updatedFriends.splice(indexFriends, 1);
+        setFriends(updatedFriends);
+        setRequested(updatedRequested);
         }
      
 
