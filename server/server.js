@@ -7,14 +7,14 @@ import messageRoutes from './Routes/message.js'
 import roomRoutes from './Routes/room.js'
 import friendRequestRoutes from './Routes/friendRequest.js'
 import friendRoutes from './Routes/friend.js'
-
 import connectToMongoDB from "./db/connectToMongoDB.js";
 import { app, server } from './socket/socket.js'
 
 const PORT = process.env.PORT || 4001;
 
-const __dirname = path.resolve();
 dotenv.config();
+
+const __dirname = path.resolve();
 
 app.use(express.json()); 
 app.use(cookieParser());
