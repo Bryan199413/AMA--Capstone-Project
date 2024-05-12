@@ -2,6 +2,7 @@ import  path  from "path";
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import cors from 'cors';
 import userRoutes from './Routes/user.js'
 import messageRoutes from './Routes/message.js'
 import roomRoutes from './Routes/room.js'
@@ -18,6 +19,11 @@ const __dirname = path.resolve();
 
 app.use(express.json()); 
 app.use(cookieParser());
+
+app.use(cors({
+    origin: 'https://machimachi.onrender.com'
+  }));
+  
 
 app.use('/api/users',userRoutes);
 app.use('/api/messages',messageRoutes);
