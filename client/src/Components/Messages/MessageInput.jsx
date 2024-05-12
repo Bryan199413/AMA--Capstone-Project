@@ -29,7 +29,7 @@ function MessageInput() {
   useEffect(() => {
     inputRef.current.focus();
     setMessage("")
-  }, [selectedConversation,]);
+  }, [selectedConversation]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

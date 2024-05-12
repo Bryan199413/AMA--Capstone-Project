@@ -3,6 +3,7 @@ import { RiMenuUnfoldLine } from "react-icons/ri";
 import SideNav from './Sidenav/SideNav';
 import useConversation from '../zustand/useConversation';
 import FriendRequests from './FriendRequests';
+import NewChatHeader from './NewChatHeader';
 
 function Navbar() {
   const {selectedConversation} = useConversation();
@@ -37,7 +38,7 @@ function Navbar() {
       </div>
         
       <div className="flex-1 text-xl">
-        {selectedConversation === 'New Chat' ? (<h1>New Chat</h1>) 
+        {selectedConversation === 'New Chat' ? (<NewChatHeader />) 
         : 
         (<div className='flex items-center'>
           <img className="w-10 h-10 rounded-full" src={selectedConversation.avatar} alt="Avatar" />

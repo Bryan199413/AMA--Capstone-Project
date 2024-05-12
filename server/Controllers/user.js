@@ -5,6 +5,7 @@ import _ from "lodash";
 import otpGenerator from "otp-generator";
 // import twilio from 'twilio';
 import generateTokenAndSetCookie from "../utils/generateToken.js";
+import Conversation from "../Models/Conversation.js"
 import User from "../Models/User.js";
 import Friend from "../Models/Friend.js";
 import Otp from "../Models/Otp.js";
@@ -121,15 +122,37 @@ export const logout = (req,res) => {
     }
 };
 
-export const getUsersForSidebar = async (req,res) => {
+export const getConversation = async (req, res) => {
   try {
     const loggedInUserID = req.user._id;
 
-    const filteredUsers = await User.find({_id: {$ne:loggedInUserID}}).select(["-password","-phoneNumber","-isAdmin"]);
+    const filteredConversations = await Conversation.find({
+      participants: loggedInUserID 
+    }).select("-messages")
+      .populate({
+        path: "participants",
+        match: { _id: { $ne: loggedInUserID } },
+        select: "_id username avatar updatedAt"
+      });
 
-    res.status(200).json(filteredUsers);
+
+    const formattedData = filteredConversations.map(conversation => {
+      const participantsData = conversation.participants.map(participant => ({
+        _id: participant._id,
+        username: participant.username,
+        avatar: participant.avatar,
+        updatedAt: participant.updatedAt
+      }));
+      
+      return {
+        conversationId: conversation._id,
+        ...participantsData[0] 
+      };
+    });
+                                   
+    res.status(200).json(formattedData);
   } catch (error) {
-    console.error("Error in getUsersForSidebar:", error);
+    console.error("Error in getConversation:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 }

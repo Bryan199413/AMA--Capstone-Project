@@ -14,7 +14,7 @@ function SideNav({ setSideNav }) {
   const {selectedConversation, setSelectedConversation} = useConversation();
   const {loading,conversations} = useGetConversations()
   const [tab, setTab] = useState('Chats');
-
+ 
   const handleTab = tab => {
     setTab(tab);
   };
@@ -60,19 +60,21 @@ function SideNav({ setSideNav }) {
       <div className="chatsAndFriends overflow-y-auto h-screen">
         <div className={tab === 'Chats' ? 'block' : 'hidden'}>
             {conversations.map((conversation) => (
-              <Conversations setSideNav={setSideNav}
-                              key={conversation._id}
-                              conversation={conversation}
+              <Conversations 
+                setSideNav={setSideNav}
+                key={conversation._id}
+                conversation={conversation}
               />
             ))}
            {loading ? <div className='flex justify-center items-center'><span className="loading loading-spinner loading-md"></span></div> : null}
         </div>
         <div className={tab === 'Friends' ? 'block text-center' : 'hidden'}>
           {friends.map((friend,index) => (
-             <FriendList setSideNav={setSideNav}
-                         key={index}
-                         friend={friend}
-                         setTab={setTab}
+             <FriendList 
+              setSideNav={setSideNav}
+              key={index}
+              friend={friend}
+              setTab={setTab}
              />
           ))}
           {loadingF ? <div className='flex justify-center items-center'><span className="loading loading-spinner loading-md"></span></div> : null}

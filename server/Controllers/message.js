@@ -1,5 +1,6 @@
 import Conversation from "../Models/Conversation.js";
 import Message from "../Models/Message.js";
+import User from "../Models/User.js";
 import { getReceiverSocketId, io } from "../socket/socket.js";
 
 export const sendMessage = async (req, res) => {
@@ -16,6 +17,30 @@ export const sendMessage = async (req, res) => {
 			conversation = await Conversation.create({
 				participants: [senderId, receiverId],
 			});
+		  
+			const senderData = await User.findById(senderId);
+			const receiverData = await User.findById(receiverId);
+
+			const dataForReceiver = {
+				_id:senderData._id,
+				avatar:senderData.avatar,
+				username:senderData.username
+			}
+
+			const dataForSender = {
+				_id:receiverData._id,
+				avatar:receiverData.avatar,
+				username:receiverData.username
+			}
+
+			const senderSocketId = getReceiverSocketId(senderId);
+			const receiverSocketId = getReceiverSocketId(receiverId);
+			if (senderSocketId) {
+				io.to(senderSocketId).emit("newConversationForSender",dataForSender);
+			}
+            if(receiverSocketId) {
+				io.to(receiverSocketId).emit("newConversationForReceiver",dataForReceiver);
+			}
 		}
 
 		const newMessage = new Message({

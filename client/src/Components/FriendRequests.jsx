@@ -23,7 +23,7 @@ function FriendRequests() {
           {friendRequests.length === 0 && <div className="text-center">No pending friend requests.</div>}
           {friendRequests.length > 0 && (
             <div className="card-actions">
-              {friendRequests.map(request => (
+              {friendRequests.slice().reverse().map(request => (
                 <div key={request.id} className="flex justify-between items-center w-full">
                   <div className="flex items-center py-1 mx-1">
                     <div className="avatar">
@@ -34,7 +34,7 @@ function FriendRequests() {
                     <div className="px-2 overflow-ellipsis w-24 overflow-hidden">{request.username}</div>
                   </div>
                   <div className="flex gap-1">
-                    <button className="btn btn-sm px-0 w-16 btn-primary" onClick={() => (loadingAccept ? null : acceptRequest(request.id))}>Accept</button>
+                    <div className="btn btn-sm px-0 w-16 btn-primary" onClick={() => (loadingAccept ? null : acceptRequest(request.id))}>Accept</div>
                     <div className="btn btn-sm px-0 w-16">
                       <DeclineButton friendRequestId={request.id} />
                       </div> 

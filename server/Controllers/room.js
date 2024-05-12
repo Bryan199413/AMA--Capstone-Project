@@ -1,5 +1,5 @@
 import Room from '../Models/Room.js';
-import { getParticipantSocketId ,io } from '../socket/socket.js';
+import { getParticipantSocketId ,getReceiverSocketId , io } from '../socket/socket.js';
 import User from '../Models/User.js'
 
 export const createRoom = async (req, res) => {
@@ -23,8 +23,33 @@ export const createRoom = async (req, res) => {
                         status: "chatting",
                         $addToSet: { participants: participant }
                     });
+                    const data = await Room.findById(roomId);
+                    const joinedUserId = participant; 
+                    const roomCreatorId = data.participants.find(participant => participant !== joinedUserId);
                     
-                }
+                    const joinedUser= await User.findById(joinedUserId);
+			        const roomCreator = await User.findById(roomCreatorId);
+
+                    const dataForJoinedUser = {
+                        avatar:roomCreator.avatar,
+                        username:roomCreator.username
+                    }
+        
+                    const dataForRoomCreator = {
+                        avatar:joinedUser.avatar,
+                        username:joinedUser.username
+                    }
+
+                    const joinedSocketId = getReceiverSocketId(joinedUserId);
+                    const creatorSocketId = getReceiverSocketId(roomCreatorId);
+                    if (joinedSocketId) {
+                        io.to(joinedSocketId).emit("dataForJoinedUser",dataForJoinedUser);
+                    }
+                    if(creatorSocketId) {
+                        io.to(creatorSocketId).emit("dataForRoomCreator",dataForRoomCreator);
+                    }
+
+                        }
                 res.status(200).json(rooms);
             } catch (error) {
                 console.error("Error in createRoom:", error);
@@ -50,7 +75,6 @@ export const createRoom = async (req, res) => {
                         io.to(roomSocketId).emit("updatedRoom", updatedRoom);
                     }
                 }
-                
                 res.status(200).json(room);
             } catch (error) {
                 console.error("Error in createRoom:", error);

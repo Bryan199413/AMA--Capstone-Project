@@ -6,6 +6,9 @@ const useMatching = create((set) => ({
     roomMessages:[],
     setRoomMessages: (newMessage) => set((state) => ({ roomMessages: [...state.roomMessages, newMessage] })),
     deleteRoomMessages: () => set({ roomMessages: [] }),
+    receiverProfile:null,
+    setReceiverProfile: (receiverProfile) => set({receiverProfile}),
+
  }))
  
 
