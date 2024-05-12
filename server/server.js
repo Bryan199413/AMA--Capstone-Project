@@ -20,11 +20,8 @@ const __dirname = path.resolve();
 app.use(express.json()); 
 app.use(cookieParser());
 
-app.use(cors({
-    origin: 'https://machimachi.onrender.com'
-  }));
+app.use(cors());
   
-
 app.use('/api/users',userRoutes);
 app.use('/api/messages',messageRoutes);
 app.use('/api/rooms',roomRoutes)
