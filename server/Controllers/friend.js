@@ -10,6 +10,10 @@ export const getAllFriends = async (req, res) => {
             select: 'userId avatar username _id'
         });
 
+        if (!friends || !friends.friends.length) {
+            return res.status(200).json([]);
+        }
+
         const friendData = friends.friends.map(friend => ({
             userId: friend.userId,
             avatar: friend.avatar,
