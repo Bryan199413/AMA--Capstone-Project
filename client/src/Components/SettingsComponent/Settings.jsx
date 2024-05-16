@@ -25,7 +25,7 @@ function Settings({toggleMenu}) {
                  onClick={()=> handleTab("notifications")}>Notifications
                  </span>
                 <span className={`${tab === 'blockedUsers' ? 'bg-base-200' : ''} flex flex-1 justify-center p-2 md:flex-none rounded-md cursor-pointer`} 
-                 onClick={()=> handleTab("blockedUsers")}>Blocked users
+                 onClick={()=> handleTab("blockedUsers")}>Blocked
                  </span>
              </div>
              <div className="w-full overflow-auto p-2">
