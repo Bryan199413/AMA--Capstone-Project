@@ -1,5 +1,6 @@
 import Room from '../Models/Room.js';
 import { getParticipantSocketId ,getReceiverSocketId , io } from '../socket/socket.js';
+import BlockedUser from '../Models/BlockedUser.js';
 import User from '../Models/User.js'
 
 export const createRoom = async (req, res) => {
@@ -12,11 +13,28 @@ export const createRoom = async (req, res) => {
                     { $match: { status: "waiting" } },
                     { $sample: { size: 1 } }
                 ]);
+                
                 if (rooms.length > 0 ) {
-                    const roomId = rooms[0]._id.toString();
+                    const roomId = rooms[0]._id.toString(); 
                     const room = await Room.findById(roomId);
+
                     if (room.participants.includes(participant)) {
                         return res.status(400).json({ error: "User already exists in the room." });
+                    }
+                    const blockedByCreator = await BlockedUser.exists({
+                        userId: room.participants[0],
+                        blockedUsers: { $in: [participant] }
+                    });
+                    const blockedByJoining = await BlockedUser.exists({
+                        userId: participant,
+                        blockedUsers: { $in: [room.participants[0]] }
+                    });
+                    
+                    if (blockedByCreator || blockedByJoining) {
+                        await Room.findByIdAndUpdate(roomId, {
+                            $pull: { participants: participant }
+                        });
+                        return  res.json("Blocked")
                     }
 
                     await Room.findByIdAndUpdate(roomId, {
@@ -31,11 +49,13 @@ export const createRoom = async (req, res) => {
 			        const roomCreator = await User.findById(roomCreatorId);
 
                     const dataForJoinedUser = {
+                        _id:roomCreator._id,
                         avatar:roomCreator.avatar,
                         username:roomCreator.username
                     }
         
                     const dataForRoomCreator = {
+                        _id:joinedUserId,
                         avatar:joinedUser.avatar,
                         username:joinedUser.username
                     }

@@ -27,14 +27,17 @@ const useRoom = () => {
       const rooms = await res.json();
     
       if (rooms.length > 0) {
+        if(rooms === "Blocked") {
+          const newRoom = await createRoom(authUser._id);
+          return  setRoom(newRoom);
+        }
         const getRoom = await fetch(`/api/rooms/setroom/${rooms[0]._id}`);
         const room = await getRoom.json()
-        setRoom(room);
-       
+        return setRoom(room);  
       } else {
         const newRoom = await createRoom(authUser._id);
         setRoom(newRoom);
-      }
+      }  
     } catch (error) {
       toast.error(error.error);
     } finally {

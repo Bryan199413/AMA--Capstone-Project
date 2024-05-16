@@ -5,11 +5,11 @@ import { useAuthContext } from "../context/AuthContext";
 
 const useUnfriend = () => {
  const {authUser} =  useAuthContext();
- const [loadingUnfriend,setLoadingUnfriend] = useState(false);
+ const [loading,setLoading] = useState(false);
  const {friends,setFriends,requested,setRequested} = useFriend();
 
  const unfriend = async (friendId) => {
-    setLoadingUnfriend(true);
+    setLoading(true);
     try {
         const res = await fetch(`api/friends/${friendId}`,{
             method:"DELETE",
@@ -28,11 +28,11 @@ const useUnfriend = () => {
     } catch (error) {
         toast.error(error.error);
     } finally {
-        setLoadingUnfriend(false);
+        setLoading(false);
     }
  }
 
- return {loadingUnfriend,unfriend};
+ return {loading,unfriend};
 }
 
 export default useUnfriend

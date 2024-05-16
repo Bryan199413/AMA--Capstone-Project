@@ -25,4 +25,4 @@ const useDeleteRoom = () => {
     return {deleteRoom,loadingD};
 }
 
-export default useDeleteRoom
+export default useDeleteRoom;

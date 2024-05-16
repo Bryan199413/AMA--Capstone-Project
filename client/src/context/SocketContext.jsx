@@ -16,7 +16,7 @@ export const SocketContextProvider = ({ children }) => {
 
     useEffect(() => {
         if(authUser){
-            const socket = io("https://machimachi.onrender.com/",{
+            const socket = io("https://machimachi.onrender.com",{
                 query:{
                     userId: authUser._id
                 }
@@ -41,3 +41,5 @@ export const SocketContextProvider = ({ children }) => {
         <SocketContext.Provider value={{socket,onlineUsers}} >{children}</SocketContext.Provider>
     )
 }
+
+//https://machimachi.onrender.com/

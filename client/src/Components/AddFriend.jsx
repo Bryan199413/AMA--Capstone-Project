@@ -5,14 +5,13 @@ import { useAuthContext } from '../context/AuthContext';
 import useCancelFriendRequest from '../hooks/useCancelFriendRequest';
 import DeclineButton from './DeclineButton';
 import useAcceptRequest from '../hooks/useAcceptRequest';
-import useUnfriend from '../hooks/useUnfriend';
+import Unfriend from './Unfriend';
 
 function AddFriend() { 
     const {requested,friendRequests,friends} = useFriend();
     const {loading,sendFriendRequest} = useSendFriendRequest();
     const {loadingCFR,cancelFriendRequest} = useCancelFriendRequest();
     const {loadingAccept,acceptRequest} = useAcceptRequest();
-    const {loadingUnfriend,unfriend} = useUnfriend();
     const {authUser} = useAuthContext();
     const { room } = useMatching();
     const participantsArray = room?.participants.filter(participant => participant !== authUser._id);
@@ -27,7 +26,7 @@ function AddFriend() {
       (<button type='button' className='btn btn-sm btn-primary' onClick={loading ? null : sendFriendRequest}>
         Add friend
       </button>)}
-      {isAlreadyFriend && (<button type='button' className='btn btn-sm btn-primary' onClick={()=> (loadingUnfriend ? null : unfriend(isAlreadyFriend._id))}>Unfriend</button>)}
+      {isAlreadyFriend && (<Unfriend friendId={isAlreadyFriend._id}/>)}
       {isAlreadyRequested  && !isAlreadyFriend &&
        (<button type='button' className='btn btn-sm btn-primary' onClick={() => (loadingCFR ? null : cancelFriendRequest(isAlreadyRequested._id))}>
         Cancel request

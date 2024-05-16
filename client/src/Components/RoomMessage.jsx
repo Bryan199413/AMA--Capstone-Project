@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuthContext } from '../context/AuthContext';
 import AddFriend from './AddFriend';
+import BlockUserButton from './BlockUserButton';
 
 function RoomMessage({ roomMessage, index }) {
     const { authUser } = useAuthContext();
@@ -13,7 +14,7 @@ function RoomMessage({ roomMessage, index }) {
     const [isOpen, setIsOpen] = useState(false);
     const [currentOpenIndex, setCurrentOpenIndex] = useState(null);
     const dropdownRef = useRef(null);
-
+    
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -56,7 +57,7 @@ function RoomMessage({ roomMessage, index }) {
               <div ref={dropdownRef} className='relative'> 
                   <ul className="dropdown-content absolute top-0 z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 gap-2">
                     <button type='button' className='btn btn-sm btn-error'>Report</button>
-                    <button type='button' className='btn btn-sm '>Block</button>
+                    <BlockUserButton />
                     <AddFriend />
                   </ul>
               </div>

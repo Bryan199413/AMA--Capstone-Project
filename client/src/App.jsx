@@ -10,14 +10,21 @@ import useListenRoom from './hooks/useListenRoom';
 import useListenFriendRequest from './hooks/useListenFriendRequest';
 import useListenFriend from './hooks/useListenFriend';
 import useListenConversations from './hooks/useListenConversations';
+import { useEffect } from 'react';
+import useTheme from './zustand/useTheme';
 
 function App() {
   const {authUser} = useAuthContext();
+  const {theme} = useTheme();
   useListenMessages();
   useListenRoom();
   useListenFriendRequest();
   useListenFriend();
   useListenConversations();
+
+  useEffect(() => {
+    document.querySelector("html").setAttribute("data-theme", theme);
+  }, [theme]);
   return (
     <div className='font-open-sans'>
         <Routes>

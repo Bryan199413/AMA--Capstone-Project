@@ -46,7 +46,7 @@ const Login = () => {
                    onChange={(e) => {setPassword(e.target.value)}}
                   />
                   <label className="label">
-                   <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
+                   <a href="#" className="label-text-alt link link-hover">Reset password?</a>
                   </label>
                 </div>
               </div>

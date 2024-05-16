@@ -1,6 +1,15 @@
 import express from "express";
-import { login, logout, signup, verifyOtp, generateAvatar, changeAvatar, getConversation } from "../Controllers/user.js";
 import protectRoute from "../middleware/protectRoute.js";
+import { login, 
+         logout, 
+         signup, 
+         verifyOtp, 
+         generateAvatar, 
+         changeAvatar, 
+         getConversation, 
+         blockUser, 
+         unblockUser,
+         getAllBlockedUsers} from "../Controllers/user.js";
 
 const router = express.Router();
 
@@ -16,9 +25,12 @@ router.get("/",protectRoute,getConversation)
 
 router.get("/generateAvatar",generateAvatar);
 
-router.patch("/changeAvatar/:id",changeAvatar)
+router.patch("/changeAvatar/:id",changeAvatar);
 
+router.post("/block/:id",protectRoute,blockUser)
 
+router.delete('/unblock/:id',protectRoute,unblockUser);
 
+router.get("/blockedUsers",protectRoute,getAllBlockedUsers);
 
 export default router;

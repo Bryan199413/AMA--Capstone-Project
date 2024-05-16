@@ -8,6 +8,7 @@ import generateTokenAndSetCookie from "../utils/generateToken.js";
 import Conversation from "../Models/Conversation.js"
 import User from "../Models/User.js";
 import Friend from "../Models/Friend.js";
+import BlockedUser from "../Models/BlockedUser.js"
 import Otp from "../Models/Otp.js";
 
 // const client = twilio(process.env.ACOUNT_SID, process.env.AUTH_TOKEN);
@@ -68,6 +69,7 @@ export const verifyOtp = async (req,res) => {
           const newUser = new User(_.pick(rightOtpFind,["username","password","phoneNumber","avatar"]));
           await newUser.save();
           await Friend.create({userId:newUser.id});
+          await BlockedUser.create({userId:newUser.id})
           await Otp.deleteMany({phoneNumber:rightOtpFind.phoneNumber});
           
           const user = await User.findOne({username:newUser.username});    
@@ -189,8 +191,87 @@ export const changeAvatar = async (req, res) => {
   }
 };
 
+export const blockUser = async (req, res) => {
+  try {
+      const { id: userToBlockId } = req.params;
+      const userId = req.user._id;
 
+      if (userToBlockId === userId) {
+          return res.status(400).json({ message: "Cannot block yourself." });
+      }
 
+      const userExists = await User.exists({ _id: userId });
+      const userToBlockExists = await User.exists({ _id: userToBlockId });
+
+      if (!userExists || !userToBlockExists) {
+          return res.status(404).json({ message: "User not found." });
+      }
+
+      const alreadyBlocked = await BlockedUser.exists({
+          userId,
+          blockedUsers: { $in: [userToBlockId] }
+      });
+
+      if (alreadyBlocked) {
+          return res.status(400).json({ message: "User already blocked." });
+      }
+
+      await BlockedUser.findOneAndUpdate(
+          { userId },
+          { $push: { blockedUsers: userToBlockId } },
+          { upsert: true }
+      );
+
+      return res.status(201).json({ message: "User blocked successfully." });
+  } catch (error) {
+      console.log("Error in blockUser controller: ", error.message);
+      return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const unblockUser = async (req,res) => {
+  try {
+    const { id:unblockUserId } = req.params;
+    const loggedInUserID = req.user._id;
+
+    await BlockedUser.findOneAndUpdate(
+        { userId: loggedInUserID },
+        { $pull: { blockedUsers: unblockUserId } }
+    );
+
+    res.status(200).json({ message: 'Successfully unblocked user.' });
+} catch (error) {
+    console.error('Error in unBlockUser:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+}
+}
+
+export const getAllBlockedUsers = async (req,res) => {
+    try {
+        const loggedInUserID = req.user._id;
+
+        const blockedUsers = await BlockedUser.findOne({ userId: loggedInUserID }).populate({
+            path: 'blockedUsers',
+            select: 'userId avatar username _id'
+        });
+
+        if (!blockedUsers || !blockedUsers.blockedUsers.length) {
+            return res.status(200).json([]);
+        }
+
+        const blockedData = blockedUsers.blockedUsers.map(blockedUser => ({
+            avatar: blockedUser.avatar,
+            username: blockedUser.username,
+            _id: blockedUser._id
+        }));
+
+        res.status(200).json(blockedData);
+    } catch (error) {
+        console.error('Error in getAllBlockedUsers:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+};
 
 
 // module.exports.signUp = async (req,res) => {
