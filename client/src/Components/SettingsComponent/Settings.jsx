@@ -16,19 +16,19 @@ function Settings({toggleMenu}) {
           <div method="dialog">
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={toggleMenu} >✕</button>
           </div>
-          <div className="flex h-80">
-             <div className="w-52 flex flex-col p-1">
-                <div className={`${tab === 'theme' ? 'bg-base-200' : ''} p-2 rounded-md cursor-pointer`} 
+          <div className="flex flex-col md:flex-row h-80">
+             <div className="p-1 flex md:flex-col w-full md:w-80">
+                <span className={`${tab === 'theme' ? 'bg-base-200' : ''}  flex flex-1 p-2 justify-center md:flex-none rounded-md cursor-pointer`} 
                  onClick={()=> handleTab("theme")}>Theme
-                 </div>
-                <div className={`${tab === 'notifications' ? 'bg-base-200' : ''} p-2 rounded-md cursor-pointer`} 
+                 </span>
+                <span className={`${tab === 'notifications' ? 'bg-base-200' : ''} flex flex-1 justify-center p-2 md:flex-none rounded-md cursor-pointer`} 
                  onClick={()=> handleTab("notifications")}>Notifications
-                 </div>
-                <div className={`${tab === 'blockedUsers' ? 'bg-base-200' : ''} p-2 rounded-md cursor-pointer`} 
-                 onClick={()=> handleTab("blockedUsers")}>Blocked Users
-                 </div>
+                 </span>
+                <span className={`${tab === 'blockedUsers' ? 'bg-base-200' : ''} flex flex-1 justify-center p-2 md:flex-none rounded-md cursor-pointer`} 
+                 onClick={()=> handleTab("blockedUsers")}>Blocked users
+                 </span>
              </div>
-             <div className="w-full overflow-auto">
+             <div className="w-full overflow-auto p-2">
                {tab === "theme" && (<Theme />)}
                {tab === "notifications" && (<div>notif content</div>)}
                {tab === "blockedUsers" && (<BlockedUsers />)}
