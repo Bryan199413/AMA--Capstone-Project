@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import Theme from "./Theme";
 import BlockedUsers from "./BlockedUsers";
+import Notifications from "./Notifications";
 
 function Settings({toggleMenu}) {
   const [tab, setTab] = useState("theme");
@@ -18,19 +19,19 @@ function Settings({toggleMenu}) {
           </div>
           <div className="flex flex-col md:flex-row h-80">
              <div className="p-1 flex md:flex-col w-full md:w-80">
-                <span className={`${tab === 'theme' ? 'bg-base-200' : ''}  flex flex-1 p-2 justify-center md:flex-none rounded-md cursor-pointer`} 
+                <span className={`${tab === 'theme' ? 'bg-base-200' : ''}  flex flex-1 p-2 justify-center md:flex-none md:justify-start rounded-md cursor-pointer`} 
                  onClick={()=> handleTab("theme")}>Theme
                  </span>
-                <span className={`${tab === 'notifications' ? 'bg-base-200' : ''} flex flex-1 justify-center p-2 md:flex-none rounded-md cursor-pointer`} 
+                <span className={`${tab === 'notifications' ? 'bg-base-200' : ''} flex flex-1 justify-center p-2 md:flex-none md:justify-start rounded-md cursor-pointer`} 
                  onClick={()=> handleTab("notifications")}>Notifications
                  </span>
-                <span className={`${tab === 'blockedUsers' ? 'bg-base-200' : ''} flex flex-1 justify-center p-2 md:flex-none rounded-md cursor-pointer`} 
+                <span className={`${tab === 'blockedUsers' ? 'bg-base-200' : ''} flex flex-1 justify-center p-2 md:flex-none md:justify-start rounded-md cursor-pointer`} 
                  onClick={()=> handleTab("blockedUsers")}>Blocked
                  </span>
              </div>
              <div className="w-full overflow-auto p-2">
                {tab === "theme" && (<Theme />)}
-               {tab === "notifications" && (<div>notif content</div>)}
+               {tab === "notifications" && (<Notifications />)}
                {tab === "blockedUsers" && (<BlockedUsers />)}
                
              </div>

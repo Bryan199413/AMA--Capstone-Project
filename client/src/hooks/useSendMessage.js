@@ -2,11 +2,12 @@ import { useState } from "react"
 import useConversation from "../zustand/useConversation"
 import { toast } from 'sonner'
 import sentMessageSound from '../assets/sounds/sentSound.wav'
+import useNotifications from "../zustand/useNotifications"
 
 const useSendMessage = () => {
   const [loading,setLoading] = useState(false)
   const {messages,setMessages, selectedConversation} = useConversation();
-
+  const {sounds} = useNotifications();
   const sendMessage = async (message) => {
     setLoading(true)
     try {
@@ -22,7 +23,7 @@ const useSendMessage = () => {
 
       setMessages([...messages,data]);
       const sound = new Audio(sentMessageSound);
-      sound.play();
+      sounds ? sound.play() : null;
     } catch (error) {
       toast.error(error.message)
     } finally{

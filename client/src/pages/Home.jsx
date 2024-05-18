@@ -4,9 +4,11 @@ import SideNav from '../Components/Sidenav/SideNav'
 import MessageContainer from '../Components/Messages/MessageContainer'
 import MessageInput from '../Components/Messages/MessageInput'
 import useGetUserRequests from '../hooks/useGetUserRequests'
+import PopUp from '../Components/PopUp'
 
 function Home() {
   useGetUserRequests();
+ 
   return (
     <div className='bg-base-100 h-screen'> 
      
@@ -21,7 +23,8 @@ function Home() {
           <MessageInput />
         </div>
             
-      </div>         
+      </div>  
+      <PopUp />
     </div>
   )
 }

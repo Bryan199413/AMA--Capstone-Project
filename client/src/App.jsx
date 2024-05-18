@@ -21,10 +21,10 @@ function App() {
   useListenFriendRequest();
   useListenFriend();
   useListenConversations();
-
   useEffect(() => {
     document.querySelector("html").setAttribute("data-theme", theme);
   }, [theme]);
+  
   return (
     <div className='font-open-sans'>
         <Routes>
@@ -33,7 +33,7 @@ function App() {
           <Route path='/signup' element={authUser ?  <Navigate to='/' /> : <Signup />} />
           <Route path="*" element={<PageNotFound/>} /> 
         </Routes>
-        <Toaster position="top-center" richColors/>
+        <Toaster position="top-center" richColors  toastOptions={{ style: { width:460,left:0,right:0}}}/>
     </div>
   )
 }

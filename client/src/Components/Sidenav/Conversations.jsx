@@ -3,7 +3,7 @@ import useConversation from '../../zustand/useConversation'
 import { useSocketContext } from '../../context/SocketContext';
 
 function Conversations({ conversation,setSideNav}) {
-  const {selectedConversation, setSelectedConversation,messages} = useConversation()
+  const {selectedConversation, setSelectedConversation,messages} = useConversation();
   const isSeleted = selectedConversation?._id === conversation._id;
   const [hasNewMessage, setHasNewMessage] = useState(false);
   const { onlineUsers, socket} = useSocketContext();

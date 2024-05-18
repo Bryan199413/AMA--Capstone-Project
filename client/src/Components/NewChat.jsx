@@ -5,11 +5,13 @@ import sentSound from '../assets/sounds/sentSound.wav'
 import { useSocketContext } from '../context/SocketContext';
 import RoomMessage from './RoomMessage';
 import { useAuthContext } from '../context/AuthContext';
+import useNotifications from '../zustand/useNotifications';
 
 function NewChat() {
   const { room, roomMessages,setRoomMessages } = useMatching();
   const { authUser} = useAuthContext();
   const { socket } = useSocketContext();
+  const {sounds} = useNotifications();
   const lastMessageRef = useRef();
 
   useEffect(() => {
@@ -25,14 +27,14 @@ function NewChat() {
         if(room && newMessage.roomId === room._id) {
           setRoomMessages(newMessage);
           if(newMessage.senderId === authUser._id){
-            senderSound.play();
-          } else {
-            recieverSound.play();
+            if (sounds) senderSound.play();
+          } else  {
+            if (sounds) recieverSound.play();
           }
         } 
       });    
       return () => socket?.off("newMessageInRoom");
-  }, [socket,room]);
+  }, [socket,room,sounds]);
   return (
     <>
       {!room && (<div className='text-center'>New Chat</div>)}

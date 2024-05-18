@@ -29,7 +29,6 @@ function FriendList({setSideNav,friend,setTab}) {
       </div>
       <div className='py-2 px-1'>
         <HiOutlineDotsVertical size={25}/>
-        
       </div>
      
 
