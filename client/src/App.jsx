@@ -33,7 +33,7 @@ function App() {
           <Route path='/signup' element={authUser ?  <Navigate to='/' /> : <Signup />} />
           <Route path="*" element={<PageNotFound/>} /> 
         </Routes>
-        <Toaster position="top-center" richColors  toastOptions={{ style: { width:460,left:0,right:0}}}/>
+        <Toaster position="top-right" richColors />
     </div>
   )
 }

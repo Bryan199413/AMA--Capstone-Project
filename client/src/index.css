@@ -68,3 +68,14 @@
 .react-tel-input .form-control {
     @apply !w-full
 }
+
+@media (min-width: 600px) {
+    
+        [data-sonner-toaster] [data-sonner-toast] {
+            left: 0;
+            right: 20px;
+            top: -25px;
+            width: 800px,
+
+        }
+    }
