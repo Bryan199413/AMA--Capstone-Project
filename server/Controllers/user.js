@@ -11,7 +11,7 @@ import Friend from "../Models/Friend.js";
 import BlockedUser from "../Models/BlockedUser.js"
 import Otp from "../Models/Otp.js";
 import ReportedUser from "../Models/ReportedUsers.js";
-import Feedback from "../Models/FeedBack.js";
+import Feedback from "../Models/Feedback.js";
 import BannedUser from "../Models/BannedUser.js";
 
 // const client = twilio(process.env.ACOUNT_SID, process.env.AUTH_TOKEN);
