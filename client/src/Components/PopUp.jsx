@@ -53,7 +53,7 @@ const PopUp = () => {
               </button>
             </div>
           </div>
-        ),{duration:100000});
+        ));
       }
     };
 

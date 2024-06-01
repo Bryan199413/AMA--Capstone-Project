@@ -5,6 +5,8 @@ const useNotifications = create((set) => ({
     setSounds: (sounds) => set({sounds}),
     popUp:true,
     setPopUp: (popUp) => set({popUp}),
+    termOfUse:false,
+    setTermOfUse: (termOfUse) => set({termOfUse}),
  }))
  
 export default useNotifications;

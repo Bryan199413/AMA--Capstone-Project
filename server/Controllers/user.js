@@ -10,6 +10,9 @@ import User from "../Models/User.js";
 import Friend from "../Models/Friend.js";
 import BlockedUser from "../Models/BlockedUser.js"
 import Otp from "../Models/Otp.js";
+import ReportedUser from "../Models/ReportedUsers.js";
+import Feedback from "../Models/FeedBack.js";
+import BannedUser from "../Models/BannedUser.js";
 
 // const client = twilio(process.env.ACOUNT_SID, process.env.AUTH_TOKEN);
 
@@ -98,6 +101,11 @@ export const login = async (req,res) => {
       const user = await User.findOne({username});
       const isPasswordCorrect = await bcrypt.compare(password,user?.password || "");
 
+      const isBanned = await BannedUser.exists({ userId: user._id });
+      if (isBanned) {
+        return res.status(403).json({ error: "Your account is permanently banned.You have violated our community guidelines." });
+      }
+
       if(!user || !isPasswordCorrect){
         return res.status(400).json({error:"Invalid username or password"})
       }
@@ -107,6 +115,7 @@ export const login = async (req,res) => {
         _id: user._id,
         username: user.username,
         avatar: user.avatar,
+        isAdmin:user.isAdmin
       })
     } catch (error) {
       console.error("Error in LoginUser:", error.message);
@@ -273,6 +282,124 @@ export const getAllBlockedUsers = async (req,res) => {
 
 };
 
+export const reportUser = async (req,res) => {
+  try {
+    const loggedInUserID = req.user._id;
+    const { id: reportedId } = req.params;
+    const { reason, description } = req.body;
+
+ 
+    const newReport = new ReportedUser({
+      userId: reportedId,
+      reporterId: loggedInUserID,
+      reason,
+      description,
+    });
+
+   
+    await newReport.save();
+
+    res.status(200).json({ message: 'User successfully reported.' });
+    
+} catch (error) {
+    console.error('Error in reportUser:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+}
+}
+
+export const submitFeedback = async (req, res) => {
+  try {
+    const { feedbackText } = req.body;
+    const userId = req.user._id;
+
+    const feedback = new Feedback({
+      userId,
+      feedbackText
+    });
+
+    await feedback.save();
+
+    res.status(201).json({ message: 'Feedback submitted successfully', feedback });
+  } catch (error) {
+    console.error('Error in submitFeedback:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+//admin controller
+
+export const getAllReportedUsers = async (req, res) => {
+  try {
+    const reportedUsers = await ReportedUser.find({});
+
+    const response = reportedUsers.map(report => ({
+      userId: report.reporterId,
+      reportedId: report.reporterId._id,
+      reason: report.reason,
+      description: report.description,
+    }));
+
+    res.status(200).json(response);
+  } catch (error) {
+    console.error('Error in getAllReportedUsers:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+export const getAllFeedback = async (req, res) => {
+  try {
+    const feedbacks = await Feedback.find().select('userId feedbackText _id');
+
+    res.status(200).json(feedbacks);
+  } catch (error) {
+    console.error('Error in getAllFeedback:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+export const banUser = async (req, res) => {
+  try {
+    const { id:userId } = req.params;
+    const { reason, description } = req.body;
+    const bannedBy = req.user._id; 
+
+    console.log(userId)
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+  
+    const admin = await User.findById(bannedBy);
+    if (!admin) {
+      return res.status(404).json({ error: 'Admin not found' });
+    }
+
+
+    const banRecord = await BannedUser.create({
+      userId,
+      reason,
+      description,
+      bannedBy,
+    });
+
+    res.status(200).json({ message: 'User banned successfully', banRecord });
+  } catch (error) {
+    console.error('Error in banUser:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+export const getTotalUsers = async (req, res) => {
+  try {
+      const userCount = await User.countDocuments({});
+      res.status(200).json(userCount);
+  } catch (error) {
+      console.error('Error in getTotalUsers:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
 // module.exports.signUp = async (req,res) => {
 //   const user = await User.findOne({number:req.body.number});

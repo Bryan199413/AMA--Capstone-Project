@@ -5,6 +5,7 @@ import MessageContainer from '../Components/Messages/MessageContainer'
 import MessageInput from '../Components/Messages/MessageInput'
 import useGetUserRequests from '../hooks/useGetUserRequests'
 import PopUp from '../Components/PopUp'
+import TermOfUse from '../Components/TermOfUse'
 
 function Home() {
   useGetUserRequests();
@@ -13,7 +14,7 @@ function Home() {
     <div className='bg-base-100 h-screen'> 
      
       <div className='w-full max-h-screen overflow-hidden flex'>
-        <div className='hidden lg:block'>
+        <div className='absolute left-[-100%] lg:relative lg:left-0'>
           <SideNav />
         </div>
         
@@ -25,8 +26,10 @@ function Home() {
             
       </div>  
       <PopUp />
+      <TermOfUse />
     </div>
   )
 }
 
-export default Home
+export default Home;
+

@@ -66,7 +66,6 @@ function SideNav({ setSideNav }) {
                 conversation={conversation}
               />
             ))}
-           {loading ? <div className='flex justify-center items-center'><span className="loading loading-spinner loading-md"></span></div> : null}
         </div>
         <div className={tab === 'Friends' ? 'block text-center' : 'hidden'}>
           {friends.map((friend,index) => (

@@ -4,7 +4,7 @@ import useConversation from '../zustand/useConversation';
 
 const useListenConversations = () => {
     const { socket } = useSocketContext();
-    const {conversations,setConversations} = useConversation();
+    const {conversations,setConversations,selectedConversation} = useConversation();
 
     useEffect(() => {
       const handleNewConversationsforSender = (newConversation) => {
@@ -14,17 +14,22 @@ const useListenConversations = () => {
       const handleNewConversationsforReceiver = (newConversation) => {
          setConversations([...conversations,newConversation]) 
       };
+
+      const handleDeletedConversation = (friendId) => {
+        const updatedConversations = conversations.filter(friend => friend._id !== friendId); 
+           setConversations(updatedConversations);
+      }
       
 
       socket?.on("newConversationForSender", handleNewConversationsforSender);
       socket?.on("newConversationForReceiver",handleNewConversationsforReceiver);
-  
+      socket?.on("deletedConversation",handleDeletedConversation);
   
       return () => {
         socket?.off("newConversationForSender", handleNewConversationsforSender);
         socket?.off("newConversationForReceiver",handleNewConversationsforReceiver);
       };
-    }, [socket,conversations,setConversations]);
+    }, [socket,conversations,setConversations,selectedConversation]);
 }
 
 export default useListenConversations

@@ -3,6 +3,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup';
 import PageNotFound from './pages/PageNotFound';
 import Home from './pages/Home';
+import AdminDashBoard from './pages/AdminDashBoard'
 import { Toaster} from 'sonner'
 import { useAuthContext } from './context/AuthContext';
 import useListenMessages from './hooks/useListenMessages';
@@ -28,7 +29,7 @@ function App() {
   return (
     <div className='font-open-sans'>
         <Routes>
-          <Route path='/' element={authUser ? <Home /> : <Navigate to={"/login"} />} />
+          <Route path='/' element={authUser ? (authUser.isAdmin ? <AdminDashBoard /> : <Home />) : <Navigate to={"/login"} />} />
           <Route path='/login' element={authUser ? <Navigate to='/' /> : <Login />} />
           <Route path='/signup' element={authUser ?  <Navigate to='/' /> : <Signup />} />
           <Route path="*" element={<PageNotFound/>} /> 

@@ -89,6 +89,32 @@ export const getMessages = async (req, res) => {
 	}
 };
 
+export const deleteConversation = async (req, res) => {
+    try {
+        const { id: friendId } = req.params;
+        const loggedInUserID = req.user._id;
+
+        const conversation = await Conversation.findOneAndDelete({
+            participants: { $all: [loggedInUserID, friendId] }
+        });
+
+        if (!conversation) {
+            return res.status(404).json({ message: 'Conversation not found.' });
+        }
+
+		const receiverSocketId = getReceiverSocketId(friendId);
+		if (receiverSocketId) {
+			io.to(receiverSocketId).emit("deletedConversation",loggedInUserID);
+		}
+
+        res.status(200).json({ message: 'Successfully Deleted Conversation.' });
+    } catch (error) {
+        console.error('Error in deleteConversation:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+
 // export const readMarkMessage = async (req,res) => {
 // 	try {
 // 		const {} = req.params

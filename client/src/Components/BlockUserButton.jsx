@@ -2,17 +2,36 @@ import React from 'react'
 import useBlockUser from '../hooks/useBlockUser'
 import useMatching from '../zustand/useMatching';
 import useDeleteRoom from '../hooks/useDeleteRoom';
+import useUnfriend from '../hooks/useUnfriend';
+import useFriend from '../zustand/useFriend';
+import useConversation from '../zustand/useConversation';
+import useDeleteConversation from '../hooks/useDeleteConversation';
 
-function BlockUserButton() {
+function BlockUserButton({friendId}) {
     const {receiverProfile} = useMatching();
+    const {deleteConversation} = useDeleteConversation();
+    const {setSelectedConversation,selectedConversation,conversations} = useConversation();
     const {deleteRoom} = useDeleteRoom();
-    const userId = receiverProfile?._id;
-    
     const {blockUser,loading} = useBlockUser();
-
+    const {unfriend} =  useUnfriend();
+    const {friends} = useFriend();
+    const userId = receiverProfile?._id;
+ 
     const handleBlockUser = async (userId) => {
+       const isAlreadyFriend = friends.find(friend => friend._id === userId);
+       const isAlreadyInRoom = receiverProfile?._id === userId;
+       const isAlreadyConversation = conversations.find(friend => friend._id === userId) 
        await blockUser(userId);
-        deleteRoom();
+       if(isAlreadyFriend){
+         await unfriend(userId);
+       }
+       if(isAlreadyInRoom) {
+        await deleteRoom();
+       }
+       if(isAlreadyConversation) {
+        await deleteConversation(userId);
+       }
+       setSelectedConversation("New Chat");
     }
   return (
     <>   
@@ -25,7 +44,7 @@ function BlockUserButton() {
                 <p className="py-4 ">Are you sure to block this user ? </p>
                 <form method='dialog' className='flex justify-center gap-2'>
                     <button className='btn'>No</button>
-                    <button className='btn btn-primary' onClick={() =>(loading ? null : handleBlockUser(userId))}>Yes</button>
+                    <button className='btn btn-primary' onClick={() =>(loading ? null : handleBlockUser(selectedConversation === "New Chat" ? userId : friendId))}>Yes</button>
                 </form>
             </div>
         </dialog>

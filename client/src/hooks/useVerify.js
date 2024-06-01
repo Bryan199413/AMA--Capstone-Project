@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { useAuthContext } from '../context/AuthContext';
+import useNotifications from '../zustand/useNotifications';
 
 const useVerify = () => {
     const [loading,setLoading] = useState(false);
     const {setAuthUser} = useAuthContext();
+    const {setTermOfUse} = useNotifications();
     const verify = async (phoneNumber,otp) => {
         setLoading(true);
         try {
@@ -21,7 +23,7 @@ const useVerify = () => {
             toast.success("Registered Successfully!")
             localStorage.setItem("machimachi-user",JSON.stringify(data));
             setAuthUser(data);
-            
+            setTermOfUse(true);
         } catch (error) {
             toast.error(error.message)
         }finally{

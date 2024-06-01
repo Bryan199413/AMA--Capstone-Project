@@ -58,7 +58,7 @@ function Message({message}) {
               <div ref={dropdownRef} className='relative'> 
                   <ul className="dropdown-content absolute top-0 z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 gap-2">
                     <button type='button' className='btn btn-sm btn-error'>Report</button>
-                    <BlockUserButton />
+                    <BlockUserButton friendId={selectedConversation._id} />
                     <Unfriend friendId={selectedConversation._id}/>
                   </ul>
               </div>
