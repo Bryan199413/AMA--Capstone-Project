@@ -8,7 +8,7 @@ import useConversation from '../zustand/useConversation';
 import useDeleteConversation from '../hooks/useDeleteConversation';
 
 function BlockUserButton({friendId}) {
-    const {receiverProfile} = useMatching();
+    const {room,receiverProfile} = useMatching();
     const {deleteConversation} = useDeleteConversation();
     const {setSelectedConversation,selectedConversation,conversations} = useConversation();
     const {deleteRoom} = useDeleteRoom();
@@ -19,7 +19,7 @@ function BlockUserButton({friendId}) {
  
     const handleBlockUser = async (userId) => {
        const isAlreadyFriend = friends.find(friend => friend._id === userId);
-       const isAlreadyInRoom = receiverProfile?._id === userId;
+       const isAlreadyInRoom = room?.participants.find(user => user === userId);
        const isAlreadyConversation = conversations.find(friend => friend._id === userId) 
        await blockUser(userId);
        if(isAlreadyFriend){

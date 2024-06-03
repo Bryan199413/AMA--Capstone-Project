@@ -98,17 +98,20 @@ export const verifyOtp = async (req,res) => {
 export const login = async (req,res) => {
     try {
       const{username,password} = req.body;
+      console.log(username)
+      console.log(password)
       const user = await User.findOne({username});
       const isPasswordCorrect = await bcrypt.compare(password,user?.password || "");
-
+  
+      if(!user || !isPasswordCorrect){
+        return res.status(400).json({error:"Invalid username or password"})
+      }
+      
       const isBanned = await BannedUser.exists({ userId: user._id });
       if (isBanned) {
         return res.status(403).json({ error: "Your account is permanently banned.You have violated our community guidelines." });
       }
 
-      if(!user || !isPasswordCorrect){
-        return res.status(400).json({error:"Invalid username or password"})
-      }
       generateTokenAndSetCookie(user._id, res);
 
       return res.status(200).json({

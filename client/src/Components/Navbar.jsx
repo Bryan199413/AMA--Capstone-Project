@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { RiMenuUnfoldLine } from "react-icons/ri";
 import SideNav from './Sidenav/SideNav';
 import useConversation from '../zustand/useConversation';

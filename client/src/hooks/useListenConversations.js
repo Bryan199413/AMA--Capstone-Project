@@ -4,7 +4,7 @@ import useConversation from '../zustand/useConversation';
 
 const useListenConversations = () => {
     const { socket } = useSocketContext();
-    const {conversations,setConversations,selectedConversation} = useConversation();
+    const {conversations,setConversations,selectedConversation,setSelectedConversation} = useConversation();
 
     useEffect(() => {
       const handleNewConversationsforSender = (newConversation) => {
@@ -29,7 +29,7 @@ const useListenConversations = () => {
         socket?.off("newConversationForSender", handleNewConversationsforSender);
         socket?.off("newConversationForReceiver",handleNewConversationsforReceiver);
       };
-    }, [socket,conversations,setConversations,selectedConversation]);
+    }, [socket,conversations,setConversations,selectedConversation,setSelectedConversation]);
 }
 
 export default useListenConversations
