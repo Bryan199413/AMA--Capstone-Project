@@ -6,6 +6,7 @@ import MessageInput from '../Components/Messages/MessageInput'
 import useGetUserRequests from '../hooks/useGetUserRequests'
 import PopUp from '../Components/PopUp'
 import TermOfUse from '../Components/TermOfUse'
+import ChatRules from '../Components/ChatRules'
 
 function Home() {
   useGetUserRequests();
@@ -27,6 +28,7 @@ function Home() {
       </div>  
       <PopUp />
       <TermOfUse />
+      <ChatRules />
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { extractTime } from "../../utils/extractTime";
 import useConversation from "../../zustand/useConversation"
 import BlockUserButton from "../BlockUserButton";
 import Unfriend from "../Unfriend";
+import ReportButton from "../ReportButton";
 
 function Message({message}) {
   const {authUser} = useAuthContext()
@@ -57,7 +58,7 @@ function Message({message}) {
         {!fromMe && isOpen && (
               <div ref={dropdownRef} className='relative'> 
                   <ul className="dropdown-content absolute top-0 z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 gap-2">
-                    <button type='button' className='btn btn-sm btn-error'>Report</button>
+                    <ReportButton userId={selectedConversation._id}/>
                     <BlockUserButton friendId={selectedConversation._id} />
                     <Unfriend friendId={selectedConversation._id}/>
                   </ul>

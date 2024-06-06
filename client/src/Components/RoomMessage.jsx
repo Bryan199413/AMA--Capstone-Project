@@ -2,8 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAuthContext } from '../context/AuthContext';
 import AddFriend from './AddFriend';
 import BlockUserButton from './BlockUserButton';
+import ReportButton from './ReportButton';
+import useMatching from '../zustand/useMatching';
 
 function RoomMessage({ roomMessage, index }) {
+    const {receiverProfile} = useMatching();
     const { authUser } = useAuthContext();
     const fromMe = roomMessage.senderId === authUser._id;
     const currentTime = new Date(); 
@@ -56,7 +59,7 @@ function RoomMessage({ roomMessage, index }) {
             {!fromMe && isOpen && (
               <div ref={dropdownRef} className='relative'> 
                   <ul className="dropdown-content absolute top-0 z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 gap-2">
-                    <button type='button' className='btn btn-sm btn-error'>Report</button>
+                    <ReportButton userId={receiverProfile._id}/>
                     <BlockUserButton />
                     <AddFriend />
                   </ul>

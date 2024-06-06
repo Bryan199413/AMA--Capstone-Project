@@ -7,6 +7,8 @@ const useNotifications = create((set) => ({
     setPopUp: (popUp) => set({popUp}),
     termOfUse:false,
     setTermOfUse: (termOfUse) => set({termOfUse}),
+    chatRules:false,
+    setChatRules: (chatRules) => set({chatRules}),
  }))
  
 export default useNotifications;

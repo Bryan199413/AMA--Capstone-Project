@@ -6,6 +6,7 @@ import { useSocketContext } from '../context/SocketContext';
 import RoomMessage from './RoomMessage';
 import { useAuthContext } from '../context/AuthContext';
 import useNotifications from '../zustand/useNotifications';
+import Welcome from './Welcome'
 
 function NewChat() {
   const { room, roomMessages,setRoomMessages } = useMatching();
@@ -37,7 +38,7 @@ function NewChat() {
   }, [socket,room,sounds]);
   return (
     <>
-      {!room && (<div className='text-center'>New Chat</div>)}
+      {!room && (<Welcome />)}
       {room?.status === "waiting" && (<div className='h-full flex'><span className="loading loading-infinity w-40 text-info m-auto"></span></div>)}
       {room?.status === "chatting" && room?.participants.every(participant => participant.roomId === room?.id) && (
         <div className='max-w-[850px] mx-auto w-full'>
