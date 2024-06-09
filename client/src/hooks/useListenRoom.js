@@ -8,10 +8,12 @@ const useListenRoom = () => {
   
   useEffect(() => {
     const handleUpdatedRoom = (updatedRoom) => {
-      if (updatedRoom === null) {
+      if (updatedRoom?.status === "chatEnded") {
+        setRoom(updatedRoom);
+      } else if (updatedRoom === null) {
         setRoom(null);
-        deleteRoomMessages();
-      } else if (updatedRoom && updatedRoom.id === room?.id) {
+      }
+      else if (updatedRoom && updatedRoom.id === room?.id) {
         setRoom(updatedRoom);
       }
     };

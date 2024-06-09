@@ -19,13 +19,13 @@ function BlockUserButton({friendId}) {
  
     const handleBlockUser = async (userId) => {
        const isAlreadyFriend = friends.find(friend => friend._id === userId);
-       const isAlreadyInRoom = room?.participants.find(user => user === userId);
+       const isAlreadyInRoom = room?.participants?.find(user => user === userId);
        const isAlreadyConversation = conversations.find(friend => friend._id === userId) 
        await blockUser(userId);
        if(isAlreadyFriend){
          await unfriend(userId);
        }
-       if(isAlreadyInRoom) {
+       if(isAlreadyInRoom && room?.status !== "chatEnded") {
         await deleteRoom();
        }
        if(isAlreadyConversation) {

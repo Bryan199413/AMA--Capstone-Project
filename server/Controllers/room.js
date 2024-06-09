@@ -133,7 +133,7 @@ export const deleteRoom = async (req, res) => {
         if (!deletedRoom) {
             return res.status(404).json({ error: "Room not found" });
         }
-        const updatedRoom = null;
+        const updatedRoom = deletedRoom.participants.length > 1 ? ({status:"chatEnded", participants:deletedRoom.participants}) : null
         for (const participantId of deletedRoom.participants) {
             const roomSocketId = getParticipantSocketId(participantId);
               
@@ -141,7 +141,7 @@ export const deleteRoom = async (req, res) => {
                 io.to(roomSocketId).emit("updatedRoom",updatedRoom);
             }
         }
-        res.status(200).json({ message :"This Room was Deleted",status:null});
+        res.status(200).json({ message :"This Room was Deleted",status:"ended"});
     } catch (error) {
         console.log("Error in deleteRoom", error);
         return res.status(500).json({ error: "Internal Server Error" });

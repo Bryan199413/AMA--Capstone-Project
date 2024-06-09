@@ -98,8 +98,6 @@ export const verifyOtp = async (req,res) => {
 export const login = async (req,res) => {
     try {
       const{username,password} = req.body;
-      console.log(username)
-      console.log(password)
       const user = await User.findOne({username});
       const isPasswordCorrect = await bcrypt.compare(password,user?.password || "");
   

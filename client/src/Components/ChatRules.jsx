@@ -32,7 +32,7 @@ function ChatRules() {
                 <li>Communicating with minors. Report any underage users immediately.</li>
                 <li>Using the service with malicious intent, including exploiting our servers or attempting Denial of Service attacks.</li>
                 <li>Creating or using accounts to send unsolicited advertisements or harass individuals.</li>
-                <li>Buying or selling Chitchat.gg accounts.</li>
+                <li>Buying or selling Machimachi accounts.</li>
               </ul>
               <p>
                 To report any of the above activities, report directly the user in the app.

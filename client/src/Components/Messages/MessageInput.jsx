@@ -51,7 +51,7 @@ function MessageInput() {
           disabled={selectedConversation === "New Chat" && disabled}
           type="text" 
           className="grow border px-4 py-2 rounded-full border-none bg-base-300 outline-none"
-          placeholder="Type a message..."
+          placeholder="Type a message..." 
           ref={inputRef}
           value={message} 
           onChange={(e) => setMessage(e.target.value)}

@@ -7,6 +7,7 @@ import RoomMessage from './RoomMessage';
 import { useAuthContext } from '../context/AuthContext';
 import useNotifications from '../zustand/useNotifications';
 import Welcome from './Welcome'
+import ChatEnded from './ChatEnded';
 
 function NewChat() {
   const { room, roomMessages,setRoomMessages } = useMatching();
@@ -14,12 +15,16 @@ function NewChat() {
   const { socket } = useSocketContext();
   const {sounds} = useNotifications();
   const lastMessageRef = useRef();
-
+  const chatEndedRef = useRef();
+  
   useEffect(() => {
     setTimeout(() => {
+      if(room?.status === "chatEnded") {
+        chatEndedRef.current?.scrollIntoView({behavior : "smooth"});
+      }
       lastMessageRef.current?.scrollIntoView({behavior : "smooth"});
     },0);
-  },[roomMessages]);
+  },[roomMessages,room]);
   
   useEffect(() => {
       socket?.on("newMessageInRoom", (newMessage) => {
@@ -36,18 +41,20 @@ function NewChat() {
       });    
       return () => socket?.off("newMessageInRoom");
   }, [socket,room,sounds]);
+  
   return (
     <>
-      {!room && (<Welcome />)}
+      {room === null && (<Welcome />)}
       {room?.status === "waiting" && (<div className='h-full flex'><span className="loading loading-infinity w-40 text-info m-auto"></span></div>)}
-      {room?.status === "chatting" && room?.participants.every(participant => participant.roomId === room?.id) && (
+      {(room?.status === "chatting" || room?.status === "chatEnded") && room?.participants?.every(participant => participant.roomId === room?.id) && (
         <div className='max-w-[850px] mx-auto w-full'>
             {roomMessages.length > 0 &&  
               roomMessages.map((roomMessage,index) => (
             <div key={index} ref={lastMessageRef}>
               <RoomMessage key={index} roomMessage={roomMessage}/>
             </div>))}
-            {roomMessages.length ===  0 && (<p className='text-center'>Send a message to start the conversation</p>)}
+            {roomMessages.length ===  0 && room?.status === "chatting" && (<p className='text-center'>Send a message to start the conversation</p>)}
+            {room?.status === "chatEnded"  && (<div ref={chatEndedRef}><ChatEnded /> </div>)}
         </div>
       )}
     </>

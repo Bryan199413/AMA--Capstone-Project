@@ -38,7 +38,7 @@ io.on('connection',(socket) => {
         try {           
             const deletedRoom = await Room.findOneAndDelete({ participants: userId });
             if(!deletedRoom) return;
-            const updatedRoom = null;
+            const updatedRoom = deletedRoom.participants.length > 1 ? ({status:"chatEnded", participants:deletedRoom.participants}) : null
             for (const participantId of deletedRoom.participants) {
                 const roomSocketId = getParticipantSocketId(participantId);
                     

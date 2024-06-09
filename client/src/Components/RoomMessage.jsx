@@ -6,7 +6,7 @@ import ReportButton from './ReportButton';
 import useMatching from '../zustand/useMatching';
 
 function RoomMessage({ roomMessage, index }) {
-    const {receiverProfile} = useMatching();
+    const {receiverProfile,room} = useMatching();
     const { authUser } = useAuthContext();
     const fromMe = roomMessage.senderId === authUser._id;
     const currentTime = new Date(); 
@@ -47,7 +47,7 @@ function RoomMessage({ roomMessage, index }) {
     return (
         <div className={`chat ${chatClassName} mx-2`}>
             <div className="chat-image avatar ">
-                <div className={`w-9 rounded-full ${!fromMe ? 'cursor-pointer' : ''}`} onClick={() => handleToggle(index)}>
+                <div className={`w-9 rounded-full ${!fromMe ? 'cursor-pointer' : ''}`} onClick={() =>(room?.status === "chatEnded" ? null : handleToggle(index))}>
                   <img alt="Tailwind CSS chat bubble component" src={avatar} />
                 </div>
             </div>
@@ -55,7 +55,6 @@ function RoomMessage({ roomMessage, index }) {
             <div className="chat-footer opacity-50">
                 <time className="text-xs opacity-50">{formattedTime}</time>
             </div>
-
             {!fromMe && isOpen && (
               <div ref={dropdownRef} className='relative'> 
                   <ul className="dropdown-content absolute top-0 z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 gap-2">

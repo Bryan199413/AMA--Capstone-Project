@@ -7,7 +7,7 @@ const useRoomMessage = () => {
   const [loadingM,setLoading] = useState(false)
   const { room } = useMatching();
   const {authUser} = useAuthContext();
-  const participantsArray = room?.participants.filter(participant => participant !== authUser._id);
+  const participantsArray = room?.participants?.filter(participant => participant !== authUser._id);
   const receiverId = participantsArray ? participantsArray[0] : null;
   const senderId = authUser._id;
   
