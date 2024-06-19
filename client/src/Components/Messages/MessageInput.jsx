@@ -23,6 +23,7 @@ function MessageInput() {
   const {isOpenImageGenerator,setIsOpenImageGenerator} = useImageGenerator();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const inputRef = useRef(null);
+
   useEffect(() => {
     if (room?.status === "chatting") {
       setDisabled(false);
@@ -80,13 +81,13 @@ function MessageInput() {
           className="grow border px-4 py-2 rounded-full border-none bg-base-300 outline-none"
           placeholder="Type a message..." 
           ref={inputRef}
-          value={message} 
+          value={message}
           onChange={(e) => setMessage(e.target.value)}
           />
           <button type='button' className="relative"  disabled={selectedConversation === "New Chat" && disabled}>
           <MdInsertEmoticon size={28} className="cursor-pointer" onClick={() => setShowEmojiPicker(!showEmojiPicker)}/>
           {showEmojiPicker && (
-           <div type='button' className='absolute bottom-10 right-2 z-10' 
+           <div type='button' className='absolute bottom-10 -right-2 z-10' 
             onBlur={handleEmojiPickerBlur}
            > 
             <Picker
