@@ -6,20 +6,27 @@ import Banner from '../Components/Banner';
 const Login = () => {
    const [username,setUsername] = useState('');
    const [password,setPassword] = useState('');
-   
+
    const {loading,login} = useLogin();
    
    const handleSubmit = async (e) => {
 		e.preventDefault();
 		await login(username,password);
 	};
+  
+  const initialOnlineUsers = 1321;
+
+  const formatNumber = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
   return (
    <div>
       <div className="hero min-h-screen bg-base-200 ">
         <div className="hero-content w-full h-screen flex-row">
          <div className="h-[100%] hidden lg:flex flex-col gap-80">
-           <div className='text-green-400 text-xl font-bold'>100k+ Online</div>
-           <div> <Banner /></div>    
+           <div className='text-green-400 text-xl font-bold'>{`${formatNumber(initialOnlineUsers)} Online`}</div>
+            <Banner />  
          </div>
          <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <div className='flex flex-col items-center px-[32px] pt-[32px]'>

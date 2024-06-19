@@ -133,15 +133,51 @@ export const deleteRoom = async (req, res) => {
         if (!deletedRoom) {
             return res.status(404).json({ error: "Room not found" });
         }
-        const updatedRoom = deletedRoom.participants.length > 1 ? ({status:"chatEnded", participants:deletedRoom.participants}) : null
-        for (const participantId of deletedRoom.participants) {
-            const roomSocketId = getParticipantSocketId(participantId);
-              
-            if (roomSocketId) {
-                io.to(roomSocketId).emit("updatedRoom",updatedRoom);
+
+        let updatedRoom = null;
+
+        if(deletedRoom.participants.length > 1 ) {
+            const [participant1, participant2] = deletedRoom.participants;
+            
+            const blockedByParticipant1 = await BlockedUser.exists({
+                userId: participant1,
+                blockedUsers: { $in: [participant2] }
+            });
+            const blockedByParticipant2 = await BlockedUser.exists({
+                userId: participant2,
+                blockedUsers: { $in: [participant1] }
+            });
+           
+            if (blockedByParticipant1 || blockedByParticipant2) {
+                const participant1SocketId = getParticipantSocketId(participant1);
+                const participant2SocketId = getParticipantSocketId(participant2);
+
+                if (participant1SocketId) {
+                    io.to(participant1SocketId).emit("updatedRoom", updatedRoom);
+                }
+                if (participant2SocketId) {
+                    io.to(participant2SocketId).emit("updatedRoom", updatedRoom);
+                }
+            } else {
+                updatedRoom = {status:"chatEnded", participants:deletedRoom.participants};
+                for (const participantId of deletedRoom.participants) {
+                    const roomSocketId = getParticipantSocketId(participantId);
+                      
+                    if (roomSocketId) {
+                        io.to(roomSocketId).emit("updatedRoom",updatedRoom);
+                    }
+                }
+            }
+        } else if (deletedRoom.participants.length === 1){
+            for (const participantId of deletedRoom.participants) {
+                const roomSocketId = getParticipantSocketId(participantId);
+                    
+                if (roomSocketId) {
+                    io.to(roomSocketId).emit("updatedRoom",updatedRoom);
+                }
             }
         }
-        res.status(200).json({ message :"This Room was Deleted",status:"ended"});
+         res.status(200).json({ message :"This Room was Deleted",status:"ended"});
     } catch (error) {
         console.log("Error in deleteRoom", error);
         return res.status(500).json({ error: "Internal Server Error" });

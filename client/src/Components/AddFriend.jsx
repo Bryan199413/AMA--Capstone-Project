@@ -33,10 +33,8 @@ function AddFriend() {
       </button>)}
       {isFriendRequestSent &&  (
         <div className='w-ful grid grid-cols-2 gap-1   '>
-          <button className='btn btn-sm btn-primary' onClick={() =>(loadingAccept ? null : acceptRequest(isFriendRequestSent.id))}>Accept</button>
-          <div className='btn btn-sm'>
+          <button className='btn btn-sm btn-primary' onClick={() =>(loadingAccept ? null : acceptRequest(isFriendRequestSent.id))}>Accept</button>    
             <DeclineButton friendRequestId={isFriendRequestSent.id} /> 
-          </div>
         </div>
       )}
     </>

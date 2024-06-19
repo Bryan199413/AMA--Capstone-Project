@@ -8,6 +8,7 @@ import messageRoutes from './Routes/message.js'
 import roomRoutes from './Routes/room.js'
 import friendRequestRoutes from './Routes/friendRequest.js'
 import friendRoutes from './Routes/friend.js'
+import dallERoutes from './Routes/dalleE.js'
 import connectToMongoDB from "./db/connectToMongoDB.js";
 import { app, server } from './socket/socket.js'
 
@@ -27,6 +28,7 @@ app.use('/api/messages',messageRoutes);
 app.use('/api/rooms',roomRoutes)
 app.use('/api/friendRequests',friendRequestRoutes);
 app.use('/api/friends',friendRoutes);
+app.use('/api/dallE',dallERoutes);
 
 app.use(express.static(path.join(__dirname,"../client/dist")));
 

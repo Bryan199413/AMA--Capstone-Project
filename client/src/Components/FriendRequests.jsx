@@ -35,9 +35,9 @@ function FriendRequests() {
                   </div>
                   <div className="flex gap-1">
                     <div className="btn btn-sm px-0 w-16 btn-primary" onClick={() => (loadingAccept ? null : acceptRequest(request.id))}>Accept</div>
-                    <div className="btn btn-sm px-0 w-16">
+                    
                       <DeclineButton friendRequestId={request.id} />
-                      </div> 
+                      
                   </div>
                 </div>
               ))}

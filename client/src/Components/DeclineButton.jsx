@@ -4,7 +4,7 @@ function DeclineButton({friendRequestId}) {
     const {loading,declineRequest} = useDeclineRequest();
 
   return (
-    <div onClick={() => (loading ? null : declineRequest(friendRequestId))}>Decline</div>
+    <div className="btn btn-sm" onClick={() => (loading ? null : declineRequest(friendRequestId))}>Decline</div>
   )
 }
 

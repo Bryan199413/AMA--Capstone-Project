@@ -4,6 +4,7 @@ import _ from "lodash";
 // const axios = require('axios');
 import otpGenerator from "otp-generator";
 // import twilio from 'twilio';
+import { getReceiverSocketId, io } from "../socket/socket.js";
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 import Conversation from "../Models/Conversation.js"
 import User from "../Models/User.js";
@@ -226,12 +227,16 @@ export const blockUser = async (req, res) => {
           return res.status(400).json({ message: "User already blocked." });
       }
 
-      await BlockedUser.findOneAndUpdate(
+      const blockedUser = await BlockedUser.findOneAndUpdate(
           { userId },
           { $push: { blockedUsers: userToBlockId } },
           { upsert: true }
       );
-
+      
+      const receiverSocketId = getReceiverSocketId(userToBlockId);
+      if (receiverSocketId) {
+        io.to(receiverSocketId).emit("blockedUser",blockedUser);
+      }
       return res.status(201).json({ message: "User blocked successfully." });
   } catch (error) {
       console.log("Error in blockUser controller: ", error.message);

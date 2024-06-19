@@ -8,7 +8,7 @@ import useConversation from '../zustand/useConversation';
 import useDeleteConversation from '../hooks/useDeleteConversation';
 
 function BlockUserButton({friendId}) {
-    const {room,receiverProfile} = useMatching();
+    const {room,receiverProfile,setRoom} = useMatching();
     const {deleteConversation} = useDeleteConversation();
     const {setSelectedConversation,selectedConversation,conversations} = useConversation();
     const {deleteRoom} = useDeleteRoom();
@@ -27,6 +27,9 @@ function BlockUserButton({friendId}) {
        }
        if(isAlreadyInRoom && room?.status !== "chatEnded") {
         await deleteRoom();
+       }
+       if(isAlreadyInRoom) {
+        setRoom(null);
        }
        if(isAlreadyConversation) {
         await deleteConversation(userId);

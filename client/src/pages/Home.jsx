@@ -7,10 +7,12 @@ import useGetUserRequests from '../hooks/useGetUserRequests'
 import PopUp from '../Components/PopUp'
 import TermOfUse from '../Components/TermOfUse'
 import ChatRules from '../Components/ChatRules'
+import ImageGenerator from '../Components/ImageGenerator'
+import useImageGenerator from '../zustand/useImageGenerator'
 
 function Home() {
   useGetUserRequests();
- 
+  const {isOpenImageGenerator} =  useImageGenerator();
   return (
     <div className='bg-base-100 h-screen'> 
      
@@ -22,6 +24,7 @@ function Home() {
         <div className='flex flex-col w-full h-screen'>
           <Navbar/>
           <MessageContainer/>
+          {isOpenImageGenerator && ( <ImageGenerator />)}
           <MessageInput />
         </div>
             
