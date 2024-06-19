@@ -57,13 +57,22 @@ function MessageInput() {
     setShowEmojiPicker(false);
   };
 
-  const addEmoji = (e) => {
-    const sym = e.unified.split("_");
-    const codeArray = [];
-    sym.forEach((el) => codeArray.push("0x" + el));
-    let emoji = String.fromCodePoint(...codeArray);
-    setMessage(message + emoji);
+  const addEmoji = (emoji) => {
+    try {
+      if (emoji.native) {
+        setMessage(message + emoji.native);
+      } else {
+        const sym = emoji.unified.split('_');
+        const codeArray = [];
+        sym.forEach((el) => codeArray.push('0x' + el));
+        let newEmoji = String.fromCodePoint(...codeArray);
+        setMessage(message + newEmoji);
+      }
+    } catch (error) {
+      console.error('Failed to add emoji:', error);
+    }
   };
+  
   return (
     <form className='mx-1 py-2' onSubmit={handleSubmit} >
         <div className="flex items-center gap-2 max-w-[850px] mx-auto px-1">
@@ -85,20 +94,20 @@ function MessageInput() {
           onChange={(e) => setMessage(e.target.value)}
           />
           <button type='button' className="relative"  disabled={selectedConversation === "New Chat" && disabled}>
-          <MdInsertEmoticon size={28} className="cursor-pointer" onClick={() => setShowEmojiPicker(!showEmojiPicker)}/>
-          {showEmojiPicker && (
-           <div type='button' className='absolute bottom-10 -right-2 z-10' 
-            onBlur={handleEmojiPickerBlur}
-           > 
-            <Picker
-              data={data}
-              exceptEmojis={['middle_finger']}
-              autoFocus={true}
-              onEmojiSelect={addEmoji}
-              theme={theme === "dark" ? "dark" : "light"}
-            /> 
-          </div>
-          )}
+            <MdInsertEmoticon size={28} className="cursor-pointer" onClick={() => setShowEmojiPicker(!showEmojiPicker)}/>
+            {showEmojiPicker && (
+            <div type='button' className='absolute bottom-10 -right-2 z-10' 
+              onBlur={handleEmojiPickerBlur}
+            > 
+              <Picker
+                data={data}
+                exceptEmojis={['middle_finger']}
+                autoFocus={true}
+                onEmojiSelect={addEmoji}
+                theme={theme === "dark" ? "dark" : "light"}
+              /> 
+            </div>
+            )}
         </button>
           <button type='submit' 
           disabled={loading || loadingM ? true : false}>
