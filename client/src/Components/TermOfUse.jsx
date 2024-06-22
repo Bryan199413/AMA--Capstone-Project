@@ -7,7 +7,7 @@ function TermOfUse() {
     <>
       {termOfUse && (
          <dialog  className="modal modal-open">
-         <div className="modal-box">
+         <div className="modal-box max-w-[800px]">
            <h3 className="font-bold text-lg text-center">TERMS OF USE</h3>
              <div className="py-4 space-y-4">
                  <div>

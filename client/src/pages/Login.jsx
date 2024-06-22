@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useLogin from '../hooks/useLogin';
 import Banner from '../Components/Banner';
+import useGetOnlineUsers from '../hooks/useGetOnlineUsers';
 
 const Login = () => {
+  const {loadingOU,online} = useGetOnlineUsers();
    const [username,setUsername] = useState('');
    const [password,setPassword] = useState('');
 
@@ -24,8 +26,8 @@ const Login = () => {
    <div>
       <div className="hero min-h-screen bg-base-200 ">
         <div className="hero-content w-full h-screen flex-row">
-         <div className="h-[100%] hidden lg:flex flex-col gap-80">
-           <div className='text-green-400 text-xl font-bold'>{`${formatNumber(initialOnlineUsers)} Online`}</div>
+         <div className="relative hidden lg:flex flex-col gap-80 m-auto">
+         <div className='absolute -top-[400px] text-green-400 text-2xl font-bold'>{!loadingOU && `${formatNumber(initialOnlineUsers + online)} Online`}</div>
             <Banner />  
          </div>
          <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
@@ -53,7 +55,7 @@ const Login = () => {
                    onChange={(e) => {setPassword(e.target.value)}}
                   />
                   <label className="label">
-                   <a href="#" className="label-text-alt link link-hover">Reset password?</a>
+                   <Link to={'/resetpassword'} className="label-text-alt link link-hover">Reset password?</Link>
                   </label>
                 </div>
               </div>

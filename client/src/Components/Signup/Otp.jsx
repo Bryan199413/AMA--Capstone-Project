@@ -4,7 +4,7 @@ import useVerify from '../../hooks/useVerify'
 
 function Otp({ phoneNumber, Resend, displayOtpForm }) {
     const [otp, setOtp] = useState('');
-    const {verify,loading} = useVerify()
+    const {verify,loading} = useVerify();
 
     const hundleSubmit = async (e) => { 
       e.preventDefault();

@@ -11,6 +11,7 @@ import User from "../Models/User.js";
 import Friend from "../Models/Friend.js";
 import BlockedUser from "../Models/BlockedUser.js"
 import Otp from "../Models/Otp.js";
+import OtpForResetPassword from "../Models/OtpForResetPassword.js"
 import ReportedUser from "../Models/ReportedUsers.js";
 import Feedback from "../Models/Feedback.js";
 import BannedUser from "../Models/BannedUser.js";
@@ -40,7 +41,6 @@ export const signup = async (req, res) => {
       const OTP = otpGenerator.generate(6,{digits: true, specialChars: false, upperCaseAlphabets: false, lowerCaseAlphabets:false});
       const hashedOtp = await bcrypt.hash(OTP,salt)
       const generateAvatar = `https://api.dicebear.com/8.x/initials/svg?seed=${username}`;
-      console.log(OTP);
 
       const newOtp = new Otp({
         username,
@@ -51,6 +51,9 @@ export const signup = async (req, res) => {
       });
       
       await newOtp.save();
+
+      console.log(OTP);
+
       return res.status(200).json({message:"OTP was sent!"});
       } catch (error) {
           console.error("Error in signup:", error);
@@ -332,6 +335,89 @@ export const submitFeedback = async (req, res) => {
   }
 };
 
+//Reset password 
+export const verifyAccount = async (req, res) => {
+  try {
+    const { username, phoneNumber } = req.body;
+
+    const userByUsername = await User.findOne({ username });
+
+    if (!userByUsername) {
+      return res.status(404).json({ error: 'Username not found' });
+    }
+
+    const userByPhoneNumber = await User.findOne({ username, phoneNumber });
+
+    if (!userByPhoneNumber) {
+      return res.status(404).json({ error: 'Phone number does not match the username' });
+    }
+    const salt = await bcrypt.genSalt(10);
+    const OTP = otpGenerator.generate(6,{digits: true, specialChars: false, upperCaseAlphabets: false, lowerCaseAlphabets:false});
+    const hashedOtp = await bcrypt.hash(OTP,salt)
+     
+    const newOtp = new OtpForResetPassword({
+      otp:hashedOtp,
+      phoneNumber
+    });
+    
+    await newOtp.save();
+
+    console.log(OTP);
+
+    res.status(200).json({message:"OTP was sent!"});
+  } catch (error) {
+    console.error('Error in verifyAccount:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+export const verifyOtpFromResetPassword = async (req,res) => {
+  try {
+    const {phoneNumber,otp} = req.body;
+    const otpHolder = await OtpForResetPassword.find({phoneNumber:phoneNumber});
+      if(otpHolder.length === 0){
+        return res.status(400).json({error:"You use an Expired OTP!"})
+      };
+       
+      const rightOtpFind = otpHolder[otpHolder.length -1 ];
+      const validUser = await bcrypt.compare(otp,rightOtpFind.otp);
+      
+      if(rightOtpFind.phoneNumber === phoneNumber && validUser){
+
+        await OtpForResetPassword.deleteMany({phoneNumber:rightOtpFind.phoneNumber});
+        res.status(200).json({message:"Verified!"})
+      }else{
+        return res.status(400).json({error:"Your OTP was wrong!"})
+      }
+      
+  } catch (error) {
+    console.error("Error in verifyOtpFromResetPassword:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+export const setNewPassword = async (req,res) => {
+  try {
+    const {phoneNumber,newPassword,confirmPassword} = req.body;
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ error: "Passwords don't match" });
+    }
+
+    const salt = await bcrypt.genSalt(10); 
+    const hashedPassword = await bcrypt.hash(newPassword,salt);
+    await User.findOneAndUpdate(
+      { phoneNumber, phoneNumber },
+      { password: hashedPassword },
+      { new: true }
+    );
+
+    return res.status(200).json({ message: "Password updated successfully"});
+  } catch (error) {
+    console.error("Error in setNewPassword:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+}
 //admin controller
 
 export const getAllReportedUsers = async (req, res) => {
@@ -406,6 +492,24 @@ export const getTotalUsers = async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+// for non user 
+
+export const getOnlineUsers = async (req, res) => {
+  try {
+    const onlineUsers = await User.find({ isOnline: true });
+
+    if (onlineUsers.length) {
+      res.status(200).json(onlineUsers.length);
+    } else {
+      res.status(200).json(0);
+    }
+  } catch (error) {
+    console.error('Error in getOnlineUsers:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 
 // module.exports.signUp = async (req,res) => {
 //   const user = await User.findOne({number:req.body.number});

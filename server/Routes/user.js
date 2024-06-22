@@ -16,7 +16,11 @@ import { login,
          submitFeedback,
          getAllFeedback,
          banUser,
-         getTotalUsers} from "../Controllers/user.js";
+         getTotalUsers,
+         verifyAccount,
+         verifyOtpFromResetPassword,
+         setNewPassword,
+         getOnlineUsers} from "../Controllers/user.js";
 
 const router = express.Router();
 
@@ -46,10 +50,18 @@ router.get("/reported/users",protectAdminRoute,getAllReportedUsers);
 
 router.post("/feedback",protectRoute,submitFeedback);
 
+router.post("/verifyAccount",verifyAccount);
+
+router.post("/verifyOtpFromResetPassword",verifyOtpFromResetPassword);
+
+router.post("/setNewPassword",setNewPassword);
+
 router.get("/allFeedback",protectAdminRoute,getAllFeedback);
 
 router.post("/ban/:id",protectAdminRoute,banUser);
 
 router.get('/totalUsers', protectAdminRoute, getTotalUsers);
+
+router.get("/getOnlineUsers",getOnlineUsers);
 
 export default router;

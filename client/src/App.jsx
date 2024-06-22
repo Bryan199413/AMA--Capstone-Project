@@ -13,6 +13,7 @@ import useListenFriend from './hooks/useListenFriend';
 import useListenConversations from './hooks/useListenConversations';
 import { useEffect } from 'react';
 import useTheme from './zustand/useTheme';
+import Resetpassword from './pages/Resetpassword';
 
 function App() {
   const {authUser} = useAuthContext();
@@ -32,6 +33,7 @@ function App() {
           <Route path='/' element={authUser ? (authUser.isAdmin ? <AdminDashBoard /> : <Home />) : <Navigate to={"/login"} />} />
           <Route path='/login' element={authUser ? <Navigate to='/' /> : <Login />} />
           <Route path='/signup' element={authUser ?  <Navigate to='/' /> : <Signup />} />
+          <Route path='/resetpassword' element={authUser ?  <Navigate to='/' /> : <Resetpassword />} />
           <Route path="*" element={<PageNotFound/>} /> 
         </Routes>
         <Toaster position="top-right" richColors />

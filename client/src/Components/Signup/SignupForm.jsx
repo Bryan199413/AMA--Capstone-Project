@@ -66,7 +66,7 @@ function SignupForm() {
                 </div>
               <div className="form-control">
               <label className="label">
-                  <span className="label-text font-bold">Phone number verification</span>
+                  <span className="label-text font-bold">Phone number</span>
                 </label>
                 <label className="input input-bordered flex items-center gap-2">
                   <PhoneInput country={'in'}
