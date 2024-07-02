@@ -20,19 +20,19 @@ function AdminNavBar({setIsOpen,isOpen}) {
         </div>
       </div>
      
-      <div className="flex-1">
-    <a className="text-2xl p-2">
-      {isOpen === "Statistics" && 'Statistics'}
-      {isOpen === "Feedback" && 'Feedback'}
-      {isOpen === "ReportedUsers" && 'Reported Users'}
-      {isOpen === "BannedUsers" && 'Banned Users'}
-    </a>
-</div>
+      <div className='mx-auto text-2xl font-bold'>
+        {isOpen === "Statistics" && 'Statistics'}
+        {isOpen === "Feedback" && 'Feedback'}
+        {isOpen === "ReportedUsers" && 'Reported'}
+        {isOpen === "BannedUsers" && 'Banned'}
+      </div> 
    
     </div>
   )
 }
 
 export default AdminNavBar
+   
+   
 
 

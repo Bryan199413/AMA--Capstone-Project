@@ -17,7 +17,7 @@ function Message({message}) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentOpenId, setCurrentOpenId] = useState(null);
   const dropdownRef = useRef(null);
-  
+
   useEffect(() => {
       const handleClickOutside = (event) => {
           if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {

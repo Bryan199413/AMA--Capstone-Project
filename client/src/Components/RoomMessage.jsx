@@ -17,7 +17,7 @@ function RoomMessage({ roomMessage, index }) {
     const [isOpen, setIsOpen] = useState(false);
     const [currentOpenIndex, setCurrentOpenIndex] = useState(null);
     const dropdownRef = useRef(null);
-    
+ 
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {

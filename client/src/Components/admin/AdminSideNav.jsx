@@ -57,12 +57,12 @@ function AdminSideNav({setIsOpen,isOpen,setSideNav}) {
 
         <div className={`flex  items-center p-2 text-xl gap-3 rounded-md cursor-pointer ${isOpen === "ReportedUsers" ? 'bg-base-100' : ''}`} onClick={handleReportedUsers}>
           <TbReportSearch size={25} />
-          <div>Reported Users</div>
+          <div>Reported</div>
         </div>
 
         <div className={`flex  items-center p-2 text-xl gap-3 rounded-md cursor-pointer ${isOpen === "BannedUsers" ? 'bg-base-100' : ''}`} onClick={handleBannedUsers}>
           <IoBanSharp size={25} />
-          <div>Banned Users</div>
+          <div>Banned</div>
         </div>
       </div>
 

@@ -1,9 +1,9 @@
-// require('dotenv').config();
+import dotenv from "dotenv";
+dotenv.config();
 import bcrypt from "bcrypt";
 import _ from "lodash";
-// const axios = require('axios');
 import otpGenerator from "otp-generator";
-// import twilio from 'twilio';
+import twilio from 'twilio';
 import { getReceiverSocketId, io } from "../socket/socket.js";
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 import Conversation from "../Models/Conversation.js"
@@ -16,7 +16,7 @@ import ReportedUser from "../Models/ReportedUsers.js";
 import Feedback from "../Models/Feedback.js";
 import BannedUser from "../Models/BannedUser.js";
 
-// const client = twilio(process.env.ACOUNT_SID, process.env.AUTH_TOKEN);
+const client = twilio(process.env.ACOUNT_SID, process.env.AUTH_TOKEN);
 
 export const signup = async (req, res) => {
   try {
@@ -297,10 +297,13 @@ export const reportUser = async (req,res) => {
     const { id: reportedId } = req.params;
     const { reason, description } = req.body;
 
- 
+    const reportedUser = await User.findById(reportedId);
+    const reporterUser = await User.findById(loggedInUserID);
     const newReport = new ReportedUser({
       userId: reportedId,
-      reporterId: loggedInUserID,
+      username:reportedUser.username,
+      reportedBy: loggedInUserID,
+      reporterUsername:reporterUser.username,
       reason,
       description,
     });
@@ -320,10 +323,11 @@ export const submitFeedback = async (req, res) => {
   try {
     const { feedbackText } = req.body;
     const userId = req.user._id;
-
+    const username = await User.findById(userId);
     const feedback = new Feedback({
       userId,
-      feedbackText
+      feedbackText,
+      username:username.username
     });
 
     await feedback.save();
@@ -363,6 +367,14 @@ export const verifyAccount = async (req, res) => {
     await newOtp.save();
 
     console.log(OTP);
+
+    // client.messages
+    // .create({
+    //   body: 'Hello from twilio-node',
+    //   to: phoneNumber,
+    //   from: process.env.FROM,
+    // })
+    // .then((message) => console.log(message.sid));
 
     res.status(200).json({message:"OTP was sent!"});
   } catch (error) {
@@ -422,26 +434,18 @@ export const setNewPassword = async (req,res) => {
 
 export const getAllReportedUsers = async (req, res) => {
   try {
-    const reportedUsers = await ReportedUser.find({});
+    const reportedUsers = await ReportedUser.find().select('_id userId username reportedBy reporterUsername reason description timestamp');
 
-    const response = reportedUsers.map(report => ({
-      userId: report.reporterId,
-      reportedId: report.reporterId._id,
-      reason: report.reason,
-      description: report.description,
-    }));
-
-    res.status(200).json(response);
+    res.status(200).json(reportedUsers);
   } catch (error) {
     console.error('Error in getAllReportedUsers:', error);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-
 export const getAllFeedback = async (req, res) => {
   try {
-    const feedbacks = await Feedback.find().select('userId feedbackText _id');
+    const feedbacks = await Feedback.find().select('userId feedbackText _id username timestamp');
 
     res.status(200).json(feedbacks);
   } catch (error) {
@@ -456,7 +460,6 @@ export const banUser = async (req, res) => {
     const { reason, description } = req.body;
     const bannedBy = req.user._id; 
 
-    console.log(userId)
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
@@ -511,54 +514,3 @@ export const getOnlineUsers = async (req, res) => {
 };
 
 
-// module.exports.signUp = async (req,res) => {
-//   const user = await User.findOne({number:req.body.number});
-
-//   if(user){
-//     return res.status(400).send("User already registered!");
-//   }
-
-//   const OTP = otpGenerator.generate(6,{digits: true, specialChars: false, upperCaseAlphabets: false, lowerCaseAlphabets:false});
-  
-//   const number = req.body.number;
-//   console.log(OTP);
-
-//   client.messages.create({
-//     body: `Your OTP is ${OTP}`,
-//     from: process.env.FROM,
-//     to: number
-//   })
-//   .then(message => console.log(message.sid))
-//   .catch(error => console.error(error));
-
-//   const otp = new Otp({number: number, otp: OTP});
-//   const salt = await bcrypt.genSalt(10)
-//   otp.otp = await bcrypt.hash(otp.otp,salt);
-//   const result = await otp.save();
-//   return res.status(200).send("Otp send successfully");
-// }
-
-// module.exports.verifyOtp = async (req,res) => {
-//  const otpHolder = await Otp.find({number:req.body.number});
-  
-//    if(otpHolder.length === 0){
-//     return res.status(400).send("You are an Expired OTP!");
-//    }
-//    const rightOtpFind = otpHolder[otpHolder.length - 1];
-//    const validUser = await bcrypt.compare(req.body.otp,rightOtpFind.otp);
-
-//    if(rightOtpFind.number === req.body.number && validUser){
-//     const user = new User(_.pick(req.body, ["number"]));
-//     const token = user.generateJWT();
-//     const result = await user.save();
-//     const otpDeleteResult = await Otp.deleteMany({ number: req.body.number });
-
-//     return res.status(200).send({
-//         message:"User Registration Successfull!",
-//         token:token,
-//         data:result
-//     });
-//    }else{
-//     return res.status(400).send("Your OTP was wrong!");
-//    }
-// }

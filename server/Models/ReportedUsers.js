@@ -7,9 +7,17 @@ const reportedUserSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    reporterId: {
+    username: {
+      type: String,
+      required: true,
+    },
+    reportedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
+    },
+    reporterUsername: {
+      type: String,
       required: true,
     },
     reason: {
@@ -20,8 +28,11 @@ const reportedUserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    timestamp: {
+      type: Date,
+      default: Date.now
+    }
   },
-  { timestamps: true }
 );
 
 const ReportedUser = mongoose.model("ReportedUser", reportedUserSchema);

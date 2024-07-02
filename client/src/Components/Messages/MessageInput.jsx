@@ -11,6 +11,8 @@ import useMatching from '../../zustand/useMatching';
 import useRoomMessage from '../../hooks/useRoomMessage';
 import useImageGenerator from '../../zustand/useImageGenerator';
 import useTheme from '../../zustand/useTheme';
+import Filter from 'bad-words';
+import badwords from '../../utils/badwords';
 
 function MessageInput() {
   const {room} = useMatching();
@@ -23,7 +25,11 @@ function MessageInput() {
   const {isOpenImageGenerator,setIsOpenImageGenerator} = useImageGenerator();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const inputRef = useRef(null);
+  const {filipinoBadWords} = badwords();
+  const filter = new Filter();
 
+  filter.addWords(...filipinoBadWords);
+  
   useEffect(() => {
     if (room?.status === "chatting") {
       setDisabled(false);
@@ -38,16 +44,6 @@ function MessageInput() {
     setMessage("")
   }, [selectedConversation]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!message || !message.trim()) return;
-    if(selectedConversation === "New Chat"){
-      sendMessageRoom(message) 
-    } else {
-       sendMessage(message);
-    }  
-      setMessage("");
-  }
    
   const toggleImageGenerator = () => {
     setIsOpenImageGenerator(!isOpenImageGenerator);
@@ -72,6 +68,31 @@ function MessageInput() {
       console.error('Failed to add emoji:', error);
     }
   };
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!message || !message.trim()) return;
+
+    const emojiRegex = /[\uD800-\uDFFF]./;
+
+    
+    const containsOnlyEmoji = emojiRegex.test(message);
+  
+    let filteredMessage;
+    if (containsOnlyEmoji) {
+      filteredMessage = message; 
+    } else {
+      filteredMessage = filter.clean(message); 
+    }
+
+    
+    if(selectedConversation === "New Chat"){
+      sendMessageRoom(filteredMessage) 
+    } else {
+       sendMessage(containsOnlyEmoji ? message : filteredMessage);
+    }  
+      setMessage("");
+  }
   
   return (
     <form className='mx-1 py-2' onSubmit={handleSubmit} >
