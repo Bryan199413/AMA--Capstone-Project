@@ -109,6 +109,12 @@ const badwords = () => {
     'bilat',    
     'mamatay',    
     'pakamatay',    
+    'bulbol',    
+    'bulbul',    
+    'bolbol',    
+    'tubol',    
+    'bakla',    
+    'bading',    
   ];
 
   return {filipinoBadWords};

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import useReportedUsers from '../../zustand/useReportedUsers';
 
 function useGetReportedUsers() {
     const [loading,setLoading] = useState();
-    const [reportedUsers,setReportedUsers] = useState();
+    const {reportedUsers,setReportedUsers} = useReportedUsers();
     useEffect(() => {
       const getAllReportedUsers = async () => {
           setLoading(true);

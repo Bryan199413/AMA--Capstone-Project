@@ -479,6 +479,13 @@ export const banUser = async (req, res) => {
       bannedBy,
     });
 
+    await ReportedUser.deleteMany({userId:userId});
+
+    const receiverSocketId = getReceiverSocketId(userId);
+		if (receiverSocketId) {
+			io.to(receiverSocketId).emit("banUser");
+		}
+
     res.status(200).json({ message: 'User banned successfully', banRecord });
   } catch (error) {
     console.error('Error in banUser:', error);
@@ -495,6 +502,55 @@ export const getTotalUsers = async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+export const getBreakDownReport = async (req,res) => {
+  try {
+    const {id:userId} = req.params;
+    const hateSpeechCount = await ReportedUser.find({userId:userId, reason:'Hate Speech'});
+    const harrasmentOrBullyingCount = await ReportedUser.find({userId:userId,reason:'Harassment or Bullying'});
+    const spamOrAdvertisingCount = await ReportedUser.find({userId:userId,reason:'Spam or Advertising'});
+    const privacyViolationsCount = await ReportedUser.find({userId:userId,reason:'Privacy Violations'});
+    const underageUserCount = await ReportedUser.find({userId:userId,reason:'Underage User'});
+    let hateSpeech = 0 ;
+    let harrasmentOrBullying = 0 ;
+    let spamOrAdvertising = 0;
+    let privacyViolations = 0;
+    let underageUser = 0;
+
+    if(hateSpeechCount) {
+      hateSpeech = hateSpeechCount.length;
+    }
+    
+    if(harrasmentOrBullyingCount) {
+      harrasmentOrBullying = harrasmentOrBullyingCount.length;
+    }
+
+    if(spamOrAdvertisingCount) {
+      spamOrAdvertising = spamOrAdvertisingCount.length;
+    }
+
+    if(privacyViolationsCount) {
+      privacyViolations = privacyViolationsCount.length;
+    }
+
+    if(underageUserCount) {
+      underageUser = underageUserCount.length;
+    }
+    
+    const breakDown = {
+      hateSpeech:hateSpeech,
+      harrasmentOrBullying:harrasmentOrBullying,
+      spamOrAdvertising:spamOrAdvertising,
+      privacyViolations:spamOrAdvertising,
+      underageUser:underageUser
+    }
+
+    res.status(200).json(breakDown);
+  } catch (error) {
+    console.error('Error in getBreakDownReport:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
 
 // for non user 
 

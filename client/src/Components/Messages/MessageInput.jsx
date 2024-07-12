@@ -98,13 +98,13 @@ function MessageInput() {
     <form className='mx-1 py-2' onSubmit={handleSubmit} >
         <div className="flex items-center gap-2 max-w-[850px] mx-auto px-1">
           <MatchingButton/>
-          {!isOpenImageGenerator  ? 
+          {/* {!isOpenImageGenerator  ? 
           (<button type='button' className='cursor-pointer'
            disabled={selectedConversation === "New Chat" && disabled} 
            onClick={toggleImageGenerator} ><TbPhotoAi size={28} /></button>)
            :
            (<div className='cursor-pointer'><TbPhotoAi size={28} /></div>)
-          } 
+          }  */}
           <input
           disabled={selectedConversation === "New Chat" && disabled}
           type="text" 

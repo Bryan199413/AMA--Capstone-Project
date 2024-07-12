@@ -6,7 +6,7 @@ function NewChatHeader() {
   return (
     <>
     {(!room || room.status === "chatEnded") ? (
-      <h1>New Chat</h1>
+      <h1>New chat</h1>
     ) : room.status === "waiting" ? (
       <h1>Matching...</h1>
     ) : room.status === "chatting" ? (

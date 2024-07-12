@@ -20,7 +20,8 @@ import { login,
          verifyAccount,
          verifyOtpFromResetPassword,
          setNewPassword,
-         getOnlineUsers} from "../Controllers/user.js";
+         getOnlineUsers,
+         getBreakDownReport} from "../Controllers/user.js";
 
 const router = express.Router();
 
@@ -61,6 +62,8 @@ router.get("/allFeedback",protectAdminRoute,getAllFeedback);
 router.post("/ban/:id",protectAdminRoute,banUser);
 
 router.get('/totalUsers', protectAdminRoute, getTotalUsers);
+
+router.get('/breakdownReport/:id',protectAdminRoute,getBreakDownReport);
 
 router.get("/getOnlineUsers",getOnlineUsers);
 

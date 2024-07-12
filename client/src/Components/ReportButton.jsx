@@ -30,7 +30,7 @@ function ReportButton({ userId }) {
                             <option value='Harassment or Bullying'>Harassment or Bullying</option>
                             <option value='Spam or Advertising'>Spam or Advertising</option>
                             <option value='Privacy Violations'>Privacy Violations</option>
-                            <option value='Underage Users'>Underage Users</option>
+                            <option value='Underage User'>Underage User</option>
                         </select>
                         <textarea className="textarea textarea-md w-full max-h-80 min-h-40 textarea-bordered overflow-y-auto" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
                     </div>
