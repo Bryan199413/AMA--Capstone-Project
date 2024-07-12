@@ -6,13 +6,13 @@ const useBanUser = () => {
     const [loadingBan,setLoading] = useState(false);
     const {reportedUsers,setReportedUsers} = useReportedUsers();
 
-    const banUser = async (userId,reason,description) => {
+    const banUser = async (userId,reason,description,username,reportedBy) => {
         setLoading(true);
         try {
            const ban = await fetch(`api/users/ban/${userId}`,{
                method:"POST",
                headers:{"Content-Type" : "application/json"},
-               body:JSON.stringify({ reason, description })
+               body:JSON.stringify({ reason, description, username, reportedBy })
            })
            
            if(ban.ok) {

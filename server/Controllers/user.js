@@ -450,6 +450,30 @@ export const getAllReportedUsers = async (req, res) => {
   }
 };
 
+export const getAllBannedUsers = async (req,res) => {
+  try {
+    const bannedUsers = await BannedUser.find();
+
+    res.status(200).json(bannedUsers)
+  } catch (error) {
+    console.error('Error in getAllBannedUsers:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+export const unbanUser = async (req,res) => {
+  try {
+    const { id: userId } = req.params;
+    
+    await BannedUser.findOneAndDelete({userId:userId});
+
+    return res.status(200).json({ message: 'User has been unbanned'});
+  } catch (error) {
+    console.error('Error in unBanUser:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
 export const getAllFeedback = async (req, res) => {
   try {
     const feedbacks = await Feedback.find().select('userId feedbackText _id username timestamp');
@@ -464,7 +488,7 @@ export const getAllFeedback = async (req, res) => {
 export const banUser = async (req, res) => {
   try {
     const { id:userId } = req.params;
-    const { reason, description } = req.body;
+    const { reason, description, username, reportedBy } = req.body;
     const bannedBy = req.user._id; 
 
     const user = await User.findById(userId);
@@ -481,9 +505,11 @@ export const banUser = async (req, res) => {
 
     const banRecord = await BannedUser.create({
       userId,
+      username,
       reason,
+      reportedBy,
       description,
-      bannedBy,
+      bannedBy:admin.username,
     });
 
     await ReportedUser.deleteMany({userId:userId});

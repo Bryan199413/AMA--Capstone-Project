@@ -21,7 +21,9 @@ import { login,
          verifyOtpFromResetPassword,
          setNewPassword,
          getOnlineUsers,
-         getBreakDownReport} from "../Controllers/user.js";
+         getBreakDownReport,
+         getAllBannedUsers,
+         unbanUser} from "../Controllers/user.js";
 
 const router = express.Router();
 
@@ -49,6 +51,8 @@ router.post("/report/:id",protectRoute,reportUser);
 
 router.get("/reported/users",protectAdminRoute,getAllReportedUsers);
 
+router.get('/banned/Users',protectAdminRoute,getAllBannedUsers)
+
 router.post("/feedback",protectRoute,submitFeedback);
 
 router.post("/verifyAccount",verifyAccount);
@@ -60,6 +64,8 @@ router.post("/setNewPassword",setNewPassword);
 router.get("/allFeedback",protectAdminRoute,getAllFeedback);
 
 router.post("/ban/:id",protectAdminRoute,banUser);
+
+router.delete('/unban/:id',protectAdminRoute,unbanUser);
 
 router.get('/totalUsers', protectAdminRoute, getTotalUsers);
 

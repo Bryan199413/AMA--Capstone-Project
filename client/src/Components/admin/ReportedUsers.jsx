@@ -10,8 +10,8 @@ function ReportedUsers() {
   const [selectedUserId, setSelectedUserId] = useState(null);
   const { loading: loadingBreakDown, breakDown } = useGetBreakDownReport(selectedUserId);
 
-  const handleBanUser = async (userId, reason, description, reportedModalId, banModalId) => {
-    await banUser(userId, reason, description);
+  const handleBanUser = async (userId, reason, description, username, reportedBy, reportedModalId, banModalId) => {
+    await banUser(userId, reason, description,username,reportedBy);
     const reportedModal = document.getElementById(reportedModalId);
     const banModal = document.getElementById(banModalId);
 
@@ -104,6 +104,8 @@ function ReportedUsers() {
                                     report.userId,
                                     report.reason,
                                     report.description,
+                                    report.username,
+                                    report.reporterUsername,
                                     `reported_modal_${report?._id}`,
                                     `ban_modal_${report?._id}`
                                   );

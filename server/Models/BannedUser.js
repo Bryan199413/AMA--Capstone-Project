@@ -8,7 +8,15 @@ const bannedUserSchema = new Schema({
     ref: 'User',
     required: true,
   },
+  username: {
+    type: String,
+    required: true,
+  },
   reason: {
+    type: String,
+    required: true,
+  },
+  reportedBy: {
     type: String,
     required: true,
   },
@@ -17,8 +25,7 @@ const bannedUserSchema = new Schema({
     required: true,
   },
   bannedBy: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
+    type: String,
     required: true,
   },
   bannedAt: {
