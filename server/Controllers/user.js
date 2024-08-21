@@ -53,13 +53,13 @@ export const signup = async (req, res) => {
       await newOtp.save();
 
       console.log(OTP);
-      // client.messages
-      // .create({
-      //   body: `MAchimachi code - ${OTP}`,
-      //   from: process.env.FROM,
-      //   to: phoneNumber
-      // })
-      // .then((message) => console.log(message.sid));
+      client.messages
+      .create({
+        body: `MAchimachi code - ${OTP}`,
+        from: process.env.FROM,
+        to: phoneNumber
+      })
+      .then((message) => console.log(message.sid));
 
       return res.status(200).json({message:"OTP was sent!"});
       } catch (error) {
@@ -374,13 +374,13 @@ export const verifyAccount = async (req, res) => {
     await newOtp.save();
 
     console.log(OTP);
-      // client.messages
-      // .create({
-      //   body: `MAchimachi code - ${OTP}`,
-      //   from: process.env.FROM,
-      //   to: phoneNumber
-      // })
-      // .then((message) => console.log(message.sid));
+      client.messages
+      .create({
+        body: `MAchimachi code - ${OTP}`,
+        from: process.env.FROM,
+        to: phoneNumber
+      })
+      .then((message) => console.log(message.sid));
 
 
     res.status(200).json({message:"OTP was sent!"});
@@ -574,7 +574,7 @@ export const getBreakDownReport = async (req,res) => {
       hateSpeech:hateSpeech,
       harrasmentOrBullying:harrasmentOrBullying,
       spamOrAdvertising:spamOrAdvertising,
-      privacyViolations:spamOrAdvertising,
+      privacyViolations:privacyViolations,
       underageUser:underageUser
     }
 

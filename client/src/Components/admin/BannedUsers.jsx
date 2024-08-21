@@ -5,7 +5,7 @@ import useUnbanUser from '../../hooks/admin/useUnbanUser';
 
 function BannedUsers() {
     const { loading, bannedUsers } = useGetBannedUsers();
-    const { loading: unbanLoading, unbanUser } = useUnbanUser();
+    const { unbanLoading, unbanUser } = useUnbanUser();
     const [selectedUserId, setSelectedUserId] = useState(null);
 
     const sortedBannedUsers = bannedUsers?.slice().sort((a, b) => new Date(b.bannedAt) - new Date(a.bannedAt));

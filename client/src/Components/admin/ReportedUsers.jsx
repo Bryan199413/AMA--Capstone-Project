@@ -6,9 +6,9 @@ import useGetBreakDownReport from '../../hooks/admin/useGetBreakDownReport';
 
 function ReportedUsers() {
   const { loading, reportedUsers } = useGetReportedUsers();
-  const { loading: loadingBan, banUser } = useBanUser();
+  const { loadingBan, banUser } = useBanUser();
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const { loading: loadingBreakDown, breakDown } = useGetBreakDownReport(selectedUserId);
+  const { loadingBreakDown, breakDown } = useGetBreakDownReport(selectedUserId);
 
   const handleBanUser = async (userId, reason, description, username, reportedBy, reportedModalId, banModalId) => {
     await banUser(userId, reason, description,username,reportedBy);
@@ -113,7 +113,7 @@ function ReportedUsers() {
                               >
                                 <button type="button" className="btn" onClick={() =>  document.getElementById(`ban_modal_${report?._id}`).close()}>No</button>
                                 <button type="submit" className="btn btn-primary" disabled={loadingBan}>
-                                  {loadingBan ? 'Banning...' : 'Yes'}
+                                  {loadingBan ? 'Banning...' : 'yes'}
                                 </button>
                               </form>
                             </div>
